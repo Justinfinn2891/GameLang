@@ -327,6 +327,14 @@ public interface AST {
 		}
 	}
 	
+	public static class ExitGameExp extends Exp {
+		public ExitGameExp() {}
+	
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
+
 	public interface Visitor <T> {
 		// This interface should contain a signature for each concrete AST node.
 		public T visit(AST.AddExp e, Env env);
@@ -343,6 +351,7 @@ public interface AST {
 		public T visit(AST.PrintExp e, Env env); // New for the gamelang
 		public T visit(AST.StrLitExp e, Env env);
 		public T visit(AST.RollExp e, Env env);
+		public T visit(AST.ExitGameExp e, Env env);
 	}	
 }
 

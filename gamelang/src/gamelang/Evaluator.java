@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import gamelang.AST.AddExp;
 import gamelang.AST.DefineDecl;
 import gamelang.AST.DivExp;
+import gamelang.AST.ExitGameExp;
 import gamelang.AST.Exp;
 import gamelang.AST.MultExp;
 import gamelang.AST.NegExp;
@@ -150,6 +151,13 @@ public class Evaluator implements Visitor<Value> {
 	public Value visit(RollExp e, Env env) {
 	int result = 1 + (int)(Math.random() * 6); // Generates a value from 1 to 6
 	return new Value.NumVal(result);
+	}
+
+	@Override
+	public Value visit(ExitGameExp e, Env env) {	
+	System.out.println("Exiting game. Goodbye!");
+	System.exit(0);
+	return null; // this line is never reached, but needed for return type
 	}
 
 }

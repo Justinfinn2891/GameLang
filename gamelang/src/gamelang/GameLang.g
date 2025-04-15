@@ -24,6 +24,7 @@ definedecl returns [DefineDecl ast] :
         | inp = infixpower { $ast = $inp.ast; }
         | p=printexp { $ast = $p.ast; }
         | r=rollexp { $ast = $r.ast; }
+        | x=exitexp { $ast = $x.ast; }
         ;
 
 
@@ -116,12 +117,18 @@ printexp returns [Exp ast]
     : 'ROLL' { $ast = new RollExp(); }
     ;
 
+    exitexp returns [Exp ast]
+    : 'CALL' 'EXIT_GAME' { $ast = new ExitGameExp(); }
+    ;
+
  // Lexical Specification of this Programming Language
  //  - lexical specification rules start with uppercase
  
  Define : 'define' ;
  Print : 'PRINT';
  Roll : 'ROLL';
+ CALL : 'CALL';
+ EXIT_GAME : 'EXIT_GAME';
  Let : 'let' ;
  Dot : '.' ;
 
