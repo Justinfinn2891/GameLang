@@ -16,4 +16,20 @@ public interface Value {
 		public static final UnitVal v = new UnitVal();
 	    public String toString() { return "unit"; }
 	}
+	static class StrVal implements Value {
+		private final String _val;
+	
+		public StrVal(String v) {
+			_val = v;
+		}
+	
+		public String s() {
+			return _val;
+		}
+	
+		public String toString() {
+			return _val;
+		}
+	}
 }
+

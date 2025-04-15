@@ -9,12 +9,13 @@ import gamelang.AST.AddExp;
 import gamelang.AST.DefineDecl;
 import gamelang.AST.DivExp;
 import gamelang.AST.Exp;
-import gamelang.AST.LetExp;
 import gamelang.AST.MultExp;
 import gamelang.AST.NegExp;
 import gamelang.AST.NumExp;
 import gamelang.AST.PowExp;
+import gamelang.AST.PrintExp;
 import gamelang.AST.Program;
+import gamelang.AST.StrLitExp;
 import gamelang.AST.SubExp;
 import gamelang.AST.UnitExp;
 import gamelang.AST.VarExp;
@@ -116,22 +117,7 @@ public class Evaluator implements Visitor<Value> {
 		// Previously, all variables had value 42. New semantics.
 		return env.get(e.name());
 	}	
-
-	@Override
-	public Value visit(LetExp e, Env env) { // New for varlang.
-		List<String> names = e.names();
-		List<Exp> value_exps = e.value_exps();
-		List<Value> values = new ArrayList<Value>(value_exps.size());
-		
-		for(Exp exp : value_exps) 
-			values.add((Value)exp.accept(this, env));
-		
-		Env new_env = env;
-		for (int index = 0; index < names.size(); index++)
-			new_env = new ExtendEnv(new_env, names.get(index), values.get(index));
-
-		return (Value) e.body().accept(this, new_env);		
-	}	
+	
 	
 	@Override
 	public Value visit(DefineDecl d, Env env) { // New for gamelang.
@@ -141,5 +127,21 @@ public class Evaluator implements Visitor<Value> {
 		((GlobalEnv) initEnv).extend(name, value);
 		return new Value.UnitVal();		
 	}	
+
+	@Override
+	public Value visit(PrintExp e, Env env) {	
+	StringBuilder sb = new StringBuilder();
+	for (Exp part : e.getParts()) {
+		Value val = part.accept(this, env);
+		sb.append(val.toString());
+	}
+	System.out.println(sb.toString());
+	return new UnitVal();
+	}
+
+	@Override
+	public Value visit(StrLitExp e, Env env) {
+	return new StrVal(e.value());
+	}
 
 }

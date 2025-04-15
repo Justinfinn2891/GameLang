@@ -258,36 +258,7 @@ public interface AST {
 		}
 	}
 
-	/**
-	 * A let expression has the syntax 
-	 * 
-	 *  (let ((name expression)* ) expression)
-	 *  
-	 * @author hridesh
-	 *
-	 */
-	public static class LetExp extends Exp {
-		List<String> _names;
-		List<Exp> _value_exps; 
-		Exp _body;
-		
-		public LetExp(List<String> names, List<Exp> value_exps, Exp body) {
-			_names = names;
-			_value_exps = value_exps;
-			_body = body;
-		}
-		
-		public <T> T accept(Visitor<T> visitor, Env env) {
-			return visitor.visit(this, env);
-		}
-		
-		public List<String> names() { return _names; }
-		
-		public List<Exp> value_exps() { return _value_exps; }
 
-		public Exp body() { return _body; }
-
-	}
 	
 	/**
 	 * A define declaration has the syntax 
@@ -315,6 +286,39 @@ public interface AST {
 		public Exp value_exp() { return _value_exp; }
 
 	}
+
+	public static class PrintExp extends Exp {
+		private final List<Exp> parts;
+	
+		public PrintExp(List<Exp> parts) {
+			this.parts = parts;
+		}
+	
+		public List<Exp> getParts() {
+			return parts;
+		}
+	
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
+
+	public static class StrLitExp extends Exp {
+		private final String value;
+	
+		public StrLitExp(String value) {
+			this.value = value;
+		}
+	
+		public String value() {
+			return value;
+		}
+	
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
+	
 	
 	public interface Visitor <T> {
 		// This interface should contain a signature for each concrete AST node.
@@ -328,8 +332,9 @@ public interface AST {
 		public T visit(AST.NegExp e, Env env);
 		public T visit(AST.SubExp e, Env env);
 		public T visit(AST.VarExp e, Env env);
-		public T visit(AST.LetExp e, Env env); // New for the varlang
 		public T visit(AST.DefineDecl d, Env env); // New for the gamelang
+		public T visit(AST.PrintExp e, Env env); // New for the gamelang
+		public T visit(AST.StrLitExp e, Env env);
 	}	
 }
 
