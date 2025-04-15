@@ -74,20 +74,6 @@ public class Printer {
 			return "" + e.name();
 		}
 		
-		public String visit(AST.LetExp e, Env env) {
-			String result = "(let (";
-			List<String> names = e.names();
-			List<AST.Exp> value_exps = e.value_exps();
-			int num_decls = names.size();
-			for (int i = 0; i < num_decls ; i++) {
-				result += " (";
-				result += names.get(i) + " ";
-				result += value_exps.get(i).accept(this, env) + ")";
-			}
-			result += ") ";
-			result += e.body().accept(this, env) + " ";
-			return result + ")";
-		}
 		
 		public String visit(AST.DefineDecl d, Env env) {
 			String result = "(define ";
@@ -95,6 +81,35 @@ public class Printer {
 			result += d.value_exp().accept(this, env);
 			return result + ")";
 		}
+
+		@Override
+		public String visit(AST.PrintExp e, Env env) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("(PRINT");
+			for (AST.Exp part : e.getParts()) {
+				sb.append(" ").append(part.accept(this, env));
+			}
+			sb.append(")");
+			return sb.toString();
+		}
+
+
+		public String visit(AST.StrLitExp e, Env env) {
+            return e.value(); // Just return the string literal value
+        }
+
+
+        public String visit(AST.RollExp e, Env env) {
+            return "Roll"; // Or something like: String.valueOf((int)(Math.random() * 6 + 1));
+        }
+
+		public String visit(AST.Order e, Env env) {
+            return "Roll"; // Or something like: String.valueOf((int)(Math.random() * 6 + 1));
+        }
+
+        public String visit(AST.ExitGameExp e, Env env) {
+            return "ExitGame"; // Or handle game exit behavior however you want
+        }
 		
 	}
 

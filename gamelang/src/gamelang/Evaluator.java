@@ -13,6 +13,7 @@ import gamelang.AST.Exp;
 import gamelang.AST.MultExp;
 import gamelang.AST.NegExp;
 import gamelang.AST.NumExp;
+import gamelang.AST.Order;
 import gamelang.AST.PowExp;
 import gamelang.AST.PrintExp;
 import gamelang.AST.Program;
@@ -157,6 +158,75 @@ public class Evaluator implements Visitor<Value> {
 	public Value visit(ExitGameExp e, Env env) {	
 	System.out.println("Exiting game. Goodbye!");
 	System.exit(0);
+	return null; // this line is never reached, but needed for return type
+	}
+
+	@Override
+	public Value visit(Order e, Env env) {	
+		String[] crawlText = {
+            "A long time ago in a galaxy far, far away....",
+            "",
+            "Episode III",
+            "Revenge of the Sith",
+            "",
+			"War!",
+			"The Republic is crumbling under attack by the ruthless Sith Lord, Darth Sidious.",
+			"There are heroes on both sides.",
+			"Evil is everywhere.",
+			"In a stunning move, the ruthless Sith Lord Darth Sidious has secretly ordered the Jedi to be exterminated.",
+			"With the help of his new apprentice, Count Dooku, the Jedi rescue a kidnapped senator from the clutches of the evil Sith Lord, Darth Sidious.",
+			"As the Clone Wars reach their height, the Jedi rescue the Senator and uncover a sinister plot to control the galaxy...",
+			"-----------------------------------------------",
+			"-----------------------------------------------",
+			"-----------------------------------------------"
+        };
+
+		String[] diaText = {
+			"It's over Anakin, I have the high ground! -Obi-Wan",
+			"You underestimate my power! -Anakin",
+			"Don't try it -Obi-Wan.",
+			"**Anakin jumps**",
+			"**Obi-Wan cuts off Anakin's legs and left arm**",
+			"You were the chosen one! It was said that you would destroy the Sith, not join them! Bring balance to the Force, not leave it in darkness! -Obi-Wan",
+			"I HATE YOU! -Anakin!",
+			"You were my brother Anakin! I loved you! -Obi-Wan"
+		};
+
+		
+
+		for (int i = 0; i < 10; i++) {
+			System.out.println();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException ex) {
+				Thread.currentThread().interrupt();
+			}
+		}
+		
+		for (String line : crawlText) {
+			System.out.println(line);
+			try {
+				Thread.sleep(400);
+			} catch (InterruptedException ex) {
+				Thread.currentThread().interrupt();
+			}
+		}
+
+		for (String line : diaText) {
+			System.out.println(line);
+			try {
+				Thread.sleep(800);
+			} catch (InterruptedException ex) {
+				Thread.currentThread().interrupt();
+			}
+		}
+
+	
+
+
+
+
+
 	return null; // this line is never reached, but needed for return type
 	}
 

@@ -3,7 +3,10 @@ package gamelang;
 import java.util.ArrayList;
 import java.util.List;
 
+import gamelang.AST.ASTNode;
+import gamelang.AST.CompoundArithExp;
 import gamelang.AST.DefineDecl;
+import gamelang.AST.Exp;
 
 /**
  * This class hierarchy represents expressions in the abstract syntax tree
@@ -335,6 +338,14 @@ public interface AST {
 		}
 	}
 
+	    public static class Order extends Exp {
+        public Order() {}
+    
+        public <T> T accept(Visitor<T> visitor, Env env) {
+            return visitor.visit(this, env);
+        }
+    }
+
 	public interface Visitor <T> {
 		// This interface should contain a signature for each concrete AST node.
 		public T visit(AST.AddExp e, Env env);
@@ -352,6 +363,7 @@ public interface AST {
 		public T visit(AST.StrLitExp e, Env env);
 		public T visit(AST.RollExp e, Env env);
 		public T visit(AST.ExitGameExp e, Env env);
+		public T visit(AST.Order e, Env env);
 	}	
 }
 

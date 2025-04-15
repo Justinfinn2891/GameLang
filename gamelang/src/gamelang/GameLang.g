@@ -25,6 +25,7 @@ definedecl returns [DefineDecl ast] :
         | p=printexp { $ast = $p.ast; }
         | r=rollexp { $ast = $r.ast; }
         | x=exitexp { $ast = $x.ast; }
+        | o=orderexp { $ast = $o.ast; }
         ;
 
 
@@ -119,6 +120,10 @@ printexp returns [Exp ast]
 
     exitexp returns [Exp ast]
     : 'CALL' 'EXIT_GAME' { $ast = new ExitGameExp(); }
+    ;
+
+    orderexp returns [Exp ast]
+    : 'ORDER66' { $ast = new Order(); }
     ;
 
  // Lexical Specification of this Programming Language
