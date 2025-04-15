@@ -18,26 +18,26 @@ public class GameLangParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		Define=10, Print=11, Let=12, Dot=13, Number=14, Identifier=15, Letter=16, 
-		LetterOrDigit=17, AT=18, ELLIPSIS=19, WS=20, Comment=21, Line_Comment=22, 
-		STRING=23;
+		Define=10, Print=11, Roll=12, Let=13, Dot=14, Number=15, Identifier=16, 
+		Letter=17, LetterOrDigit=18, AT=19, ELLIPSIS=20, WS=21, Comment=22, Line_Comment=23, 
+		STRING=24;
 	public static final int
 		RULE_program = 0, RULE_definedecl = 1, RULE_exp = 2, RULE_numexp = 3, 
 		RULE_infixaddsubt = 4, RULE_infixmuldiv = 5, RULE_infixpower = 6, RULE_varexp = 7, 
-		RULE_printexp = 8;
+		RULE_printexp = 8, RULE_rollexp = 9;
 	public static final String[] ruleNames = {
 		"program", "definedecl", "exp", "numexp", "infixaddsubt", "infixmuldiv", 
-		"infixpower", "varexp", "printexp"
+		"infixpower", "varexp", "printexp", "rollexp"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
 		null, "'STAT'", "'='", "'('", "')'", "'-'", "'+'", "'*'", "'/'", "'^'", 
-		"'define'", "'PRINT'", "'let'", "'.'", null, null, null, null, "'@'", 
-		"'...'"
+		"'define'", "'PRINT'", "'ROLL'", "'let'", "'.'", null, null, null, null, 
+		"'@'", "'...'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, null, null, null, null, null, null, null, null, null, "Define", 
-		"Print", "Let", "Dot", "Number", "Identifier", "Letter", "LetterOrDigit", 
+		"Print", "Roll", "Let", "Dot", "Number", "Identifier", "Letter", "LetterOrDigit", 
 		"AT", "ELLIPSIS", "WS", "Comment", "Line_Comment", "STRING"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
@@ -118,26 +118,26 @@ public class GameLangParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(23);
+			setState(25);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__0) {
 				{
 				{
-				setState(18);
+				setState(20);
 				((ProgramContext)_localctx).def = definedecl();
 				 _localctx.defs.add(((ProgramContext)_localctx).def.ast); 
 				}
 				}
-				setState(25);
+				setState(27);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(29);
+			setState(31);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__4) | (1L << Print) | (1L << Number) | (1L << Identifier))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__4) | (1L << Print) | (1L << Roll) | (1L << Number) | (1L << Identifier))) != 0)) {
 				{
-				setState(26);
+				setState(28);
 				((ProgramContext)_localctx).e = exp();
 				 ((ProgramContext)_localctx).expr =  ((ProgramContext)_localctx).e.ast; 
 				}
@@ -177,13 +177,13 @@ public class GameLangParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(33);
-			match(T__0);
-			setState(34);
-			((DefinedeclContext)_localctx).id = match(Identifier);
 			setState(35);
-			match(T__1);
+			match(T__0);
 			setState(36);
+			((DefinedeclContext)_localctx).id = match(Identifier);
+			setState(37);
+			match(T__1);
+			setState(38);
 			((DefinedeclContext)_localctx).e = exp();
 			 ((DefinedeclContext)_localctx).ast =  new DefineDecl((((DefinedeclContext)_localctx).id!=null?((DefinedeclContext)_localctx).id.getText():null), ((DefinedeclContext)_localctx).e.ast); 
 			}
@@ -208,6 +208,7 @@ public class GameLangParser extends Parser {
 		public InfixmuldivContext inm;
 		public InfixpowerContext inp;
 		public PrintexpContext p;
+		public RollexpContext r;
 		public ExpContext exp() {
 			return getRuleContext(ExpContext.class,0);
 		}
@@ -229,6 +230,9 @@ public class GameLangParser extends Parser {
 		public PrintexpContext printexp() {
 			return getRuleContext(PrintexpContext.class,0);
 		}
+		public RollexpContext rollexp() {
+			return getRuleContext(RollexpContext.class,0);
+		}
 		public ExpContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -239,16 +243,16 @@ public class GameLangParser extends Parser {
 		ExpContext _localctx = new ExpContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_exp);
 		try {
-			setState(62);
+			setState(67);
 			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(39);
-				match(T__2);
-				setState(40);
-				((ExpContext)_localctx).e = exp();
 				setState(41);
+				match(T__2);
+				setState(42);
+				((ExpContext)_localctx).e = exp();
+				setState(43);
 				match(T__3);
 				 ((ExpContext)_localctx).ast =  ((ExpContext)_localctx).e.ast; 
 				}
@@ -256,7 +260,7 @@ public class GameLangParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(44);
+				setState(46);
 				((ExpContext)_localctx).v = varexp();
 				 ((ExpContext)_localctx).ast =  ((ExpContext)_localctx).v.ast; 
 				}
@@ -264,7 +268,7 @@ public class GameLangParser extends Parser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(47);
+				setState(49);
 				((ExpContext)_localctx).n = numexp();
 				 ((ExpContext)_localctx).ast =  ((ExpContext)_localctx).n.ast; 
 				}
@@ -272,7 +276,7 @@ public class GameLangParser extends Parser {
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(50);
+				setState(52);
 				((ExpContext)_localctx).in = infixaddsubt();
 				 ((ExpContext)_localctx).ast =  ((ExpContext)_localctx).in.ast;
 				}
@@ -280,7 +284,7 @@ public class GameLangParser extends Parser {
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(53);
+				setState(55);
 				((ExpContext)_localctx).inm = infixmuldiv();
 				 ((ExpContext)_localctx).ast =  ((ExpContext)_localctx).inm.ast;
 				}
@@ -288,7 +292,7 @@ public class GameLangParser extends Parser {
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(56);
+				setState(58);
 				((ExpContext)_localctx).inp = infixpower();
 				 ((ExpContext)_localctx).ast =  ((ExpContext)_localctx).inp.ast; 
 				}
@@ -296,9 +300,17 @@ public class GameLangParser extends Parser {
 			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(59);
+				setState(61);
 				((ExpContext)_localctx).p = printexp();
 				 ((ExpContext)_localctx).ast =  ((ExpContext)_localctx).p.ast; 
+				}
+				break;
+			case 8:
+				enterOuterAlt(_localctx, 8);
+				{
+				setState(64);
+				((ExpContext)_localctx).r = rollexp();
+				 ((ExpContext)_localctx).ast =  ((ExpContext)_localctx).r.ast; 
 				}
 				break;
 			}
@@ -333,12 +345,12 @@ public class GameLangParser extends Parser {
 		NumexpContext _localctx = new NumexpContext(_ctx, getState());
 		enterRule(_localctx, 6, RULE_numexp);
 		try {
-			setState(78);
+			setState(83);
 			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(64);
+				setState(69);
 				((NumexpContext)_localctx).n0 = match(Number);
 				 ((NumexpContext)_localctx).ast =  new NumExp(Integer.parseInt((((NumexpContext)_localctx).n0!=null?((NumexpContext)_localctx).n0.getText():null))); 
 				}
@@ -346,9 +358,9 @@ public class GameLangParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(66);
+				setState(71);
 				match(T__4);
-				setState(67);
+				setState(72);
 				((NumexpContext)_localctx).n0 = match(Number);
 				 ((NumexpContext)_localctx).ast =  new NumExp(-Integer.parseInt((((NumexpContext)_localctx).n0!=null?((NumexpContext)_localctx).n0.getText():null))); 
 				}
@@ -356,11 +368,11 @@ public class GameLangParser extends Parser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(69);
+				setState(74);
 				((NumexpContext)_localctx).n0 = match(Number);
-				setState(70);
+				setState(75);
 				match(Dot);
-				setState(71);
+				setState(76);
 				((NumexpContext)_localctx).n1 = match(Number);
 				 ((NumexpContext)_localctx).ast =  new NumExp(Double.parseDouble((((NumexpContext)_localctx).n0!=null?((NumexpContext)_localctx).n0.getText():null)+"."+(((NumexpContext)_localctx).n1!=null?((NumexpContext)_localctx).n1.getText():null))); 
 				}
@@ -368,13 +380,13 @@ public class GameLangParser extends Parser {
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(73);
+				setState(78);
 				match(T__4);
-				setState(74);
+				setState(79);
 				((NumexpContext)_localctx).n0 = match(Number);
-				setState(75);
+				setState(80);
 				match(Dot);
-				setState(76);
+				setState(81);
 				((NumexpContext)_localctx).n1 = match(Number);
 				 ((NumexpContext)_localctx).ast =  new NumExp(Double.parseDouble("-" + (((NumexpContext)_localctx).n0!=null?((NumexpContext)_localctx).n0.getText():null)+"."+(((NumexpContext)_localctx).n1!=null?((NumexpContext)_localctx).n1.getText():null))); 
 				}
@@ -416,23 +428,23 @@ public class GameLangParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(80);
+			setState(85);
 			((InfixaddsubtContext)_localctx).l = infixmuldiv();
 			 ((InfixaddsubtContext)_localctx).ast =  ((InfixaddsubtContext)_localctx).l.ast; 
-			setState(92);
+			setState(97);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
-					setState(90);
+					setState(95);
 					switch (_input.LA(1)) {
 					case T__5:
 						{
 						{
-						setState(82);
+						setState(87);
 						match(T__5);
-						setState(83);
+						setState(88);
 						((InfixaddsubtContext)_localctx).r = infixmuldiv();
 						 
 						                          list = new ArrayList<Exp>();
@@ -446,9 +458,9 @@ public class GameLangParser extends Parser {
 					case T__4:
 						{
 						{
-						setState(86);
+						setState(91);
 						match(T__4);
-						setState(87);
+						setState(92);
 						((InfixaddsubtContext)_localctx).r = infixmuldiv();
 						 
 						                          list = new ArrayList<Exp>();
@@ -464,7 +476,7 @@ public class GameLangParser extends Parser {
 					}
 					} 
 				}
-				setState(94);
+				setState(99);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			}
@@ -505,22 +517,22 @@ public class GameLangParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(95);
+			setState(100);
 			((InfixmuldivContext)_localctx).l = infixpower();
 			 ((InfixmuldivContext)_localctx).ast =  ((InfixmuldivContext)_localctx).l.ast; 
-			setState(107);
+			setState(112);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__6 || _la==T__7) {
 				{
-				setState(105);
+				setState(110);
 				switch (_input.LA(1)) {
 				case T__6:
 					{
 					{
-					setState(97);
+					setState(102);
 					match(T__6);
-					setState(98);
+					setState(103);
 					((InfixmuldivContext)_localctx).r = infixpower();
 					 
 					                     list = new ArrayList<Exp>();
@@ -534,9 +546,9 @@ public class GameLangParser extends Parser {
 				case T__7:
 					{
 					{
-					setState(101);
+					setState(106);
 					match(T__7);
-					setState(102);
+					setState(107);
 					((InfixmuldivContext)_localctx).r = infixpower();
 					 
 					                     list = new ArrayList<Exp>();
@@ -551,7 +563,7 @@ public class GameLangParser extends Parser {
 					throw new NoViableAltException(this);
 				}
 				}
-				setState(109);
+				setState(114);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -594,19 +606,19 @@ public class GameLangParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(110);
+			setState(115);
 			((InfixpowerContext)_localctx).l = varexp();
 			 ((InfixpowerContext)_localctx).ast =  ((InfixpowerContext)_localctx).l.ast; 
-			setState(118);
+			setState(123);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,8,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(112);
+					setState(117);
 					match(T__8);
-					setState(113);
+					setState(118);
 					((InfixpowerContext)_localctx).exponent = infixpower();
 					  // Right-associative exponentiation
 					                          ArrayList<Exp> list = new ArrayList<Exp>();
@@ -617,7 +629,7 @@ public class GameLangParser extends Parser {
 					}
 					} 
 				}
-				setState(120);
+				setState(125);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,8,_ctx);
 			}
@@ -652,12 +664,12 @@ public class GameLangParser extends Parser {
 		VarexpContext _localctx = new VarexpContext(_ctx, getState());
 		enterRule(_localctx, 14, RULE_varexp);
 		try {
-			setState(126);
+			setState(131);
 			switch (_input.LA(1)) {
 			case Identifier:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(121);
+				setState(126);
 				((VarexpContext)_localctx).id = match(Identifier);
 				 ((VarexpContext)_localctx).ast =  new VarExp((((VarexpContext)_localctx).id!=null?((VarexpContext)_localctx).id.getText():null)); 
 				}
@@ -666,7 +678,7 @@ public class GameLangParser extends Parser {
 			case Number:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(123);
+				setState(128);
 				((VarexpContext)_localctx).n = numexp();
 				 ((VarexpContext)_localctx).ast =  ((VarexpContext)_localctx).n.ast; 
 				}
@@ -716,9 +728,9 @@ public class GameLangParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(128);
+			setState(133);
 			match(Print);
-			setState(136); 
+			setState(141); 
 			_errHandler.sync(this);
 			_alt = 1;
 			do {
@@ -726,11 +738,11 @@ public class GameLangParser extends Parser {
 				case 1:
 					{
 					{
-					setState(134);
+					setState(139);
 					switch (_input.LA(1)) {
 					case STRING:
 						{
-						setState(129);
+						setState(134);
 						((PrintexpContext)_localctx).s = match(STRING);
 
 						              String raw = (((PrintexpContext)_localctx).s!=null?((PrintexpContext)_localctx).s.getText():null);
@@ -741,10 +753,11 @@ public class GameLangParser extends Parser {
 					case T__2:
 					case T__4:
 					case Print:
+					case Roll:
 					case Number:
 					case Identifier:
 						{
-						setState(131);
+						setState(136);
 						((PrintexpContext)_localctx).e = exp();
 						 parts.add(((PrintexpContext)_localctx).e.ast); 
 						}
@@ -758,7 +771,7 @@ public class GameLangParser extends Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(138); 
+				setState(143); 
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
 			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
@@ -778,45 +791,78 @@ public class GameLangParser extends Parser {
 		return _localctx;
 	}
 
+	public static class RollexpContext extends ParserRuleContext {
+		public Exp ast;
+		public RollexpContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_rollexp; }
+	}
+
+	public final RollexpContext rollexp() throws RecognitionException {
+		RollexpContext _localctx = new RollexpContext(_ctx, getState());
+		enterRule(_localctx, 18, RULE_rollexp);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(147);
+			match(Roll);
+			 ((RollexpContext)_localctx).ast =  new RollExp(); 
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\31\u0091\4\2\t\2"+
-		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\3\2\3"+
-		"\2\3\2\7\2\30\n\2\f\2\16\2\33\13\2\3\2\3\2\3\2\5\2 \n\2\3\2\3\2\3\3\3"+
-		"\3\3\3\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4"+
-		"\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4A\n\4\3\5\3\5\3\5\3\5\3\5"+
-		"\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5Q\n\5\3\6\3\6\3\6\3\6\3\6\3\6"+
-		"\3\6\3\6\3\6\3\6\7\6]\n\6\f\6\16\6`\13\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3"+
-		"\7\3\7\3\7\7\7l\n\7\f\7\16\7o\13\7\3\b\3\b\3\b\3\b\3\b\3\b\7\bw\n\b\f"+
-		"\b\16\bz\13\b\3\t\3\t\3\t\3\t\3\t\5\t\u0081\n\t\3\n\3\n\3\n\3\n\3\n\3"+
-		"\n\5\n\u0089\n\n\6\n\u008b\n\n\r\n\16\n\u008c\3\n\3\n\3\n\2\2\13\2\4\6"+
-		"\b\n\f\16\20\22\2\2\u009a\2\31\3\2\2\2\4#\3\2\2\2\6@\3\2\2\2\bP\3\2\2"+
-		"\2\nR\3\2\2\2\fa\3\2\2\2\16p\3\2\2\2\20\u0080\3\2\2\2\22\u0082\3\2\2\2"+
-		"\24\25\5\4\3\2\25\26\b\2\1\2\26\30\3\2\2\2\27\24\3\2\2\2\30\33\3\2\2\2"+
-		"\31\27\3\2\2\2\31\32\3\2\2\2\32\37\3\2\2\2\33\31\3\2\2\2\34\35\5\6\4\2"+
-		"\35\36\b\2\1\2\36 \3\2\2\2\37\34\3\2\2\2\37 \3\2\2\2 !\3\2\2\2!\"\b\2"+
-		"\1\2\"\3\3\2\2\2#$\7\3\2\2$%\7\21\2\2%&\7\4\2\2&\'\5\6\4\2\'(\b\3\1\2"+
-		"(\5\3\2\2\2)*\7\5\2\2*+\5\6\4\2+,\7\6\2\2,-\b\4\1\2-A\3\2\2\2./\5\20\t"+
-		"\2/\60\b\4\1\2\60A\3\2\2\2\61\62\5\b\5\2\62\63\b\4\1\2\63A\3\2\2\2\64"+
-		"\65\5\n\6\2\65\66\b\4\1\2\66A\3\2\2\2\678\5\f\7\289\b\4\1\29A\3\2\2\2"+
-		":;\5\16\b\2;<\b\4\1\2<A\3\2\2\2=>\5\22\n\2>?\b\4\1\2?A\3\2\2\2@)\3\2\2"+
-		"\2@.\3\2\2\2@\61\3\2\2\2@\64\3\2\2\2@\67\3\2\2\2@:\3\2\2\2@=\3\2\2\2A"+
-		"\7\3\2\2\2BC\7\20\2\2CQ\b\5\1\2DE\7\7\2\2EF\7\20\2\2FQ\b\5\1\2GH\7\20"+
-		"\2\2HI\7\17\2\2IJ\7\20\2\2JQ\b\5\1\2KL\7\7\2\2LM\7\20\2\2MN\7\17\2\2N"+
-		"O\7\20\2\2OQ\b\5\1\2PB\3\2\2\2PD\3\2\2\2PG\3\2\2\2PK\3\2\2\2Q\t\3\2\2"+
-		"\2RS\5\f\7\2S^\b\6\1\2TU\7\b\2\2UV\5\f\7\2VW\b\6\1\2W]\3\2\2\2XY\7\7\2"+
-		"\2YZ\5\f\7\2Z[\b\6\1\2[]\3\2\2\2\\T\3\2\2\2\\X\3\2\2\2]`\3\2\2\2^\\\3"+
-		"\2\2\2^_\3\2\2\2_\13\3\2\2\2`^\3\2\2\2ab\5\16\b\2bm\b\7\1\2cd\7\t\2\2"+
-		"de\5\16\b\2ef\b\7\1\2fl\3\2\2\2gh\7\n\2\2hi\5\16\b\2ij\b\7\1\2jl\3\2\2"+
-		"\2kc\3\2\2\2kg\3\2\2\2lo\3\2\2\2mk\3\2\2\2mn\3\2\2\2n\r\3\2\2\2om\3\2"+
-		"\2\2pq\5\20\t\2qx\b\b\1\2rs\7\13\2\2st\5\16\b\2tu\b\b\1\2uw\3\2\2\2vr"+
-		"\3\2\2\2wz\3\2\2\2xv\3\2\2\2xy\3\2\2\2y\17\3\2\2\2zx\3\2\2\2{|\7\21\2"+
-		"\2|\u0081\b\t\1\2}~\5\b\5\2~\177\b\t\1\2\177\u0081\3\2\2\2\u0080{\3\2"+
-		"\2\2\u0080}\3\2\2\2\u0081\21\3\2\2\2\u0082\u008a\7\r\2\2\u0083\u0084\7"+
-		"\31\2\2\u0084\u0089\b\n\1\2\u0085\u0086\5\6\4\2\u0086\u0087\b\n\1\2\u0087"+
-		"\u0089\3\2\2\2\u0088\u0083\3\2\2\2\u0088\u0085\3\2\2\2\u0089\u008b\3\2"+
-		"\2\2\u008a\u0088\3\2\2\2\u008b\u008c\3\2\2\2\u008c\u008a\3\2\2\2\u008c"+
-		"\u008d\3\2\2\2\u008d\u008e\3\2\2\2\u008e\u008f\b\n\1\2\u008f\23\3\2\2"+
-		"\2\16\31\37@P\\^kmx\u0080\u0088\u008c";
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\32\u0099\4\2\t\2"+
+		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
+		"\t\13\3\2\3\2\3\2\7\2\32\n\2\f\2\16\2\35\13\2\3\2\3\2\3\2\5\2\"\n\2\3"+
+		"\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4"+
+		"\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4F"+
+		"\n\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5V\n\5"+
+		"\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\7\6b\n\6\f\6\16\6e\13\6\3\7\3"+
+		"\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\7\7q\n\7\f\7\16\7t\13\7\3\b\3\b\3\b"+
+		"\3\b\3\b\3\b\7\b|\n\b\f\b\16\b\177\13\b\3\t\3\t\3\t\3\t\3\t\5\t\u0086"+
+		"\n\t\3\n\3\n\3\n\3\n\3\n\3\n\5\n\u008e\n\n\6\n\u0090\n\n\r\n\16\n\u0091"+
+		"\3\n\3\n\3\13\3\13\3\13\3\13\2\2\f\2\4\6\b\n\f\16\20\22\24\2\2\u00a2\2"+
+		"\33\3\2\2\2\4%\3\2\2\2\6E\3\2\2\2\bU\3\2\2\2\nW\3\2\2\2\ff\3\2\2\2\16"+
+		"u\3\2\2\2\20\u0085\3\2\2\2\22\u0087\3\2\2\2\24\u0095\3\2\2\2\26\27\5\4"+
+		"\3\2\27\30\b\2\1\2\30\32\3\2\2\2\31\26\3\2\2\2\32\35\3\2\2\2\33\31\3\2"+
+		"\2\2\33\34\3\2\2\2\34!\3\2\2\2\35\33\3\2\2\2\36\37\5\6\4\2\37 \b\2\1\2"+
+		" \"\3\2\2\2!\36\3\2\2\2!\"\3\2\2\2\"#\3\2\2\2#$\b\2\1\2$\3\3\2\2\2%&\7"+
+		"\3\2\2&\'\7\22\2\2\'(\7\4\2\2()\5\6\4\2)*\b\3\1\2*\5\3\2\2\2+,\7\5\2\2"+
+		",-\5\6\4\2-.\7\6\2\2./\b\4\1\2/F\3\2\2\2\60\61\5\20\t\2\61\62\b\4\1\2"+
+		"\62F\3\2\2\2\63\64\5\b\5\2\64\65\b\4\1\2\65F\3\2\2\2\66\67\5\n\6\2\67"+
+		"8\b\4\1\28F\3\2\2\29:\5\f\7\2:;\b\4\1\2;F\3\2\2\2<=\5\16\b\2=>\b\4\1\2"+
+		">F\3\2\2\2?@\5\22\n\2@A\b\4\1\2AF\3\2\2\2BC\5\24\13\2CD\b\4\1\2DF\3\2"+
+		"\2\2E+\3\2\2\2E\60\3\2\2\2E\63\3\2\2\2E\66\3\2\2\2E9\3\2\2\2E<\3\2\2\2"+
+		"E?\3\2\2\2EB\3\2\2\2F\7\3\2\2\2GH\7\21\2\2HV\b\5\1\2IJ\7\7\2\2JK\7\21"+
+		"\2\2KV\b\5\1\2LM\7\21\2\2MN\7\20\2\2NO\7\21\2\2OV\b\5\1\2PQ\7\7\2\2QR"+
+		"\7\21\2\2RS\7\20\2\2ST\7\21\2\2TV\b\5\1\2UG\3\2\2\2UI\3\2\2\2UL\3\2\2"+
+		"\2UP\3\2\2\2V\t\3\2\2\2WX\5\f\7\2Xc\b\6\1\2YZ\7\b\2\2Z[\5\f\7\2[\\\b\6"+
+		"\1\2\\b\3\2\2\2]^\7\7\2\2^_\5\f\7\2_`\b\6\1\2`b\3\2\2\2aY\3\2\2\2a]\3"+
+		"\2\2\2be\3\2\2\2ca\3\2\2\2cd\3\2\2\2d\13\3\2\2\2ec\3\2\2\2fg\5\16\b\2"+
+		"gr\b\7\1\2hi\7\t\2\2ij\5\16\b\2jk\b\7\1\2kq\3\2\2\2lm\7\n\2\2mn\5\16\b"+
+		"\2no\b\7\1\2oq\3\2\2\2ph\3\2\2\2pl\3\2\2\2qt\3\2\2\2rp\3\2\2\2rs\3\2\2"+
+		"\2s\r\3\2\2\2tr\3\2\2\2uv\5\20\t\2v}\b\b\1\2wx\7\13\2\2xy\5\16\b\2yz\b"+
+		"\b\1\2z|\3\2\2\2{w\3\2\2\2|\177\3\2\2\2}{\3\2\2\2}~\3\2\2\2~\17\3\2\2"+
+		"\2\177}\3\2\2\2\u0080\u0081\7\22\2\2\u0081\u0086\b\t\1\2\u0082\u0083\5"+
+		"\b\5\2\u0083\u0084\b\t\1\2\u0084\u0086\3\2\2\2\u0085\u0080\3\2\2\2\u0085"+
+		"\u0082\3\2\2\2\u0086\21\3\2\2\2\u0087\u008f\7\r\2\2\u0088\u0089\7\32\2"+
+		"\2\u0089\u008e\b\n\1\2\u008a\u008b\5\6\4\2\u008b\u008c\b\n\1\2\u008c\u008e"+
+		"\3\2\2\2\u008d\u0088\3\2\2\2\u008d\u008a\3\2\2\2\u008e\u0090\3\2\2\2\u008f"+
+		"\u008d\3\2\2\2\u0090\u0091\3\2\2\2\u0091\u008f\3\2\2\2\u0091\u0092\3\2"+
+		"\2\2\u0092\u0093\3\2\2\2\u0093\u0094\b\n\1\2\u0094\23\3\2\2\2\u0095\u0096"+
+		"\7\16\2\2\u0096\u0097\b\13\1\2\u0097\25\3\2\2\2\16\33!EUacpr}\u0085\u008d"+
+		"\u0091";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

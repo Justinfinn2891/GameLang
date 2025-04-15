@@ -15,6 +15,7 @@ import gamelang.AST.NumExp;
 import gamelang.AST.PowExp;
 import gamelang.AST.PrintExp;
 import gamelang.AST.Program;
+import gamelang.AST.RollExp;
 import gamelang.AST.StrLitExp;
 import gamelang.AST.SubExp;
 import gamelang.AST.UnitExp;
@@ -22,6 +23,7 @@ import gamelang.AST.VarExp;
 import gamelang.AST.Visitor;
 import gamelang.Env.*;
 import gamelang.Value.NumVal;
+import gamelang.Value.StrVal;
 import gamelang.Value.UnitVal;
 
 public class Evaluator implements Visitor<Value> {
@@ -142,6 +144,12 @@ public class Evaluator implements Visitor<Value> {
 	@Override
 	public Value visit(StrLitExp e, Env env) {
 	return new StrVal(e.value());
+	}
+
+	@Override
+	public Value visit(RollExp e, Env env) {
+	int result = 1 + (int)(Math.random() * 6); // Generates a value from 1 to 6
+	return new Value.NumVal(result);
 	}
 
 }

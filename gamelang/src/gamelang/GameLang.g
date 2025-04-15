@@ -23,6 +23,7 @@ definedecl returns [DefineDecl ast] :
         | inm=infixmuldiv { $ast = $inm.ast;}
         | inp = infixpower { $ast = $inp.ast; }
         | p=printexp { $ast = $p.ast; }
+        | r=rollexp { $ast = $r.ast; }
         ;
 
 
@@ -111,11 +112,16 @@ printexp returns [Exp ast]
       }
     ;
 
+    rollexp returns [Exp ast]
+    : 'ROLL' { $ast = new RollExp(); }
+    ;
+
  // Lexical Specification of this Programming Language
  //  - lexical specification rules start with uppercase
  
  Define : 'define' ;
  Print : 'PRINT';
+ Roll : 'ROLL';
  Let : 'let' ;
  Dot : '.' ;
 
