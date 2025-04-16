@@ -1,5 +1,6 @@
-(define i 1)
-(define ii 2)
-(define iii 3)
-(define iv 4)
-(define v 5)
+STAT I = 6
+PRINT "before"
+SHOOT-IF (I != 6) {
+  PRINT "inside"
+}
+PRINT "after"

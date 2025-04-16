@@ -1,10 +1,11 @@
 package gamelang;
 
-import java.util.List;
-
+import gamelang.AST.CompareExp;
+import gamelang.AST.IfExp;
 import gamelang.AST.NegExp;
 import gamelang.AST.PowExp;
 import gamelang.AST.UnitExp;
+import gamelang.AST.WhileExp;
 
 public class Printer {
 	public void print(Value v) {
@@ -75,6 +76,11 @@ public class Printer {
 		}
 		
 		
+		public String visit(CompareExp exp, Env env) {
+			// Your logic here
+			return "some string representation of the CompareExp";
+		}
+
 		public String visit(AST.DefineDecl d, Env env) {
 			String result = "(define ";
 			result += d.name() + " ";
@@ -83,21 +89,31 @@ public class Printer {
 		}
 
 		@Override
-		public String visit(AST.PrintExp e, Env env) {
-			StringBuilder sb = new StringBuilder();
-			sb.append("(PRINT");
-			for (AST.Exp part : e.getParts()) {
-				sb.append(" ").append(part.accept(this, env));
-			}
-			sb.append(")");
-			return sb.toString();
+public String visit(AST.PrintExp e, Env env) {
+	StringBuilder sb = new StringBuilder();
+	sb.append("(PRINT");
+	for (AST.Exp part : e.getParts()) {
+		String printed = part.accept(this, env);
+		if (!"unit".equals(printed)) {
+			sb.append(" ").append(printed);
 		}
+	}
+	sb.append(")");
+	return sb.toString();	
+}
 
+		public String visit(IfExp exp, Env env) {
+    // Your logic here
+    return "IfExp";
+}
 
 		public String visit(AST.StrLitExp e, Env env) {
             return e.value(); // Just return the string literal value
         }
-
+		@Override
+		public String visit(WhileExp exp, Env env) {
+			return "(LOOP-WHILE " + exp.condition().accept(this, env) + " " + exp.body().accept(this, env) + ")";
+		}
 
         public String visit(AST.RollExp e, Env env) {
             return "Roll"; // Or something like: String.valueOf((int)(Math.random() * 6 + 1));
@@ -108,6 +124,10 @@ public class Printer {
         }
 
         public String visit(AST.ExitGameExp e, Env env) {
+            return "ExitGame"; // Or handle game exit behavior however you want
+        }
+
+		public String visit(AST.BlockExp e, Env env) {
             return "ExitGame"; // Or handle game exit behavior however you want
         }
 		

@@ -2,11 +2,17 @@ grammar GameLang;
 
 // We are redefining programs to be zero or more define declarations 
 // followed by an optional expression.
-program returns [Program ast]        
-    locals [ArrayList<DefineDecl> defs, Exp expr]
-    @init { $defs = new ArrayList<DefineDecl>(); $expr = new UnitExp(); } :
-    (def=definedecl { $defs.add($def.ast); })* (e=exp { $expr = $e.ast; })? 
-    { $ast = new Program($defs, $expr); }
+program returns [Program ast]
+    locals [ArrayList<DefineDecl> defs, ArrayList<Exp> exprs]
+    @init { 
+        $defs = new ArrayList<DefineDecl>(); 
+        $exprs = new ArrayList<Exp>();
+    } :
+    (def=definedecl { $defs.add($def.ast); })*
+    (e=exp { $exprs.add($e.ast); })+ // ← use + to allow multiple exps
+    {
+        $ast = new Program($defs, new BlockExp($exprs));
+    }
 ;
 
 // New declaration for global definitions.
@@ -16,7 +22,8 @@ definedecl returns [DefineDecl ast] :
     ;
  
  exp returns [Exp ast]:
-        '(' e=exp ')' { $ast = $e.ast; } 
+        '(' e=exp ')' { $ast = $e.ast; }
+        | stat=definedecl {$ast = $stat.ast;} 
         | v=varexp { $ast = $v.ast; }
         | n=numexp { $ast = $n.ast; }
         | in=infixaddsubt { $ast = $in.ast;}
@@ -27,6 +34,8 @@ definedecl returns [DefineDecl ast] :
         | x=exitexp { $ast = $x.ast; }
         | o=orderexp { $ast = $o.ast; }
         | i=ifexp { $ast = $i.ast; }
+        | wh=whileexp { $ast = $wh.ast; }
+        | b=block { $ast = $b.ast; }
         ;
 
 
@@ -134,11 +143,28 @@ printexp returns [Exp ast]
     ;
 
     ifexp returns [Exp ast]
-    : 'IF' '(' cond=boolexp ')' stmt=exp {
+    : 'SHOOT-IF' '(' cond=boolexp ')' stmt=exp {
         $ast = new IfExp($cond.ast, $stmt.ast);
     }
     ;
-
+whileexp returns [Exp ast]
+    : 'LOOP-WHILE' '(' cond=boolexp ')' '{' stmts+=exp+ '}' {
+        List<Exp> expressions = new ArrayList<>();
+        for (ExpContext expCtx : $stmts) {
+            expressions.add(expCtx.ast);  // Add the AST of each statement
+        }
+        $ast = new WhileExp($cond.ast, new BlockExp(expressions));
+    }
+;
+block returns [Exp ast]
+    : '{' exps+=exp+ '}' {  // ← directly allow blocks inside exp
+        List<Exp> exprs = new ArrayList<>();
+        for (ExpContext e : $exps) {
+            exprs.add(e.ast);
+        }
+        $ast = new BlockExp(exprs);
+    }
+    ;
  // Lexical Specification of this Programming Language
  //  - lexical specification rules start with uppercase
  

@@ -1,11 +1,6 @@
 package gamelang;
-import static gamelang.AST.*;
-import static gamelang.Value.*;
-
-import java.util.List;
-import java.util.ArrayList;
-
 import gamelang.AST.AddExp;
+import gamelang.AST.BlockExp;
 import gamelang.AST.CompareExp;
 import gamelang.AST.DefineDecl;
 import gamelang.AST.DivExp;
@@ -25,10 +20,12 @@ import gamelang.AST.SubExp;
 import gamelang.AST.UnitExp;
 import gamelang.AST.VarExp;
 import gamelang.AST.Visitor;
-import gamelang.Env.*;
+import gamelang.AST.WhileExp;
+import gamelang.Env.GlobalEnv;
 import gamelang.Value.NumVal;
 import gamelang.Value.StrVal;
 import gamelang.Value.UnitVal;
+import java.util.List;
 
 public class Evaluator implements Visitor<Value> {
 	
@@ -120,9 +117,12 @@ public class Evaluator implements Visitor<Value> {
 
 	@Override
 	public Value visit(VarExp e, Env env) {
-		// Previously, all variables had value 42. New semantics.
-		return env.get(e.name());
-	}	
+		Value value = env.get(e.name());
+		if (value == null) {
+			throw new RuntimeException("Variable " + e.name() + " is not initialized.");
+		}
+		return value;
+	}
 	
 	
 	@Override
@@ -133,18 +133,25 @@ public class Evaluator implements Visitor<Value> {
 		((GlobalEnv) initEnv).extend(name, value);
 		return new Value.UnitVal();		
 	}	
-
 	@Override
-	public Value visit(PrintExp e, Env env) {	
-	StringBuilder sb = new StringBuilder();
-	for (Exp part : e.getParts()) {
-		Value val = part.accept(this, env);
-		sb.append(val.toString());
+	public Value visit(PrintExp e, Env env) {
+		StringBuilder sb = new StringBuilder();
+		for (Exp part : e.getParts()) {
+			Value val = part.accept(this, env);
+			// If value is null, print "null", else print the value
+			if (val == null) {
+				sb.append("null");
+			} else {
+				sb.append(val.toString());
+			}
+		}
+	
+		// Log the value we are printing (optional)
+		System.out.println("PRINT: " + sb.toString());
+	
+		return new UnitVal();  // Do not print "unit" or any value.
 	}
-	System.out.println(sb.toString());
-	return new UnitVal();
-	}
-
+	
 	@Override
 	public Value visit(StrLitExp e, Env env) {
 	return new StrVal(e.value());
@@ -163,22 +170,63 @@ public class Evaluator implements Visitor<Value> {
 	return null; // this line is never reached, but needed for return type
 	}
 
+	
 	@Override
-	public Value visit(IfExp e, Env env) {
-		Value condVal = e.condition().accept(this, env);
+public Value visit(IfExp e, Env env) {
+    // Evaluate the condition
+    Value condVal = e.condition().accept(this, env);
+    
+    // Log the value of the condition
+    System.out.println("Condition value: " + condVal);
 
-		if (!(condVal instanceof NumVal)) {
-			throw new RuntimeException("Condition must be a number (treated as boolean)");
-		}
+    // Ensure condition is a numeric value
+    if (!(condVal instanceof NumVal)) {
+        throw new RuntimeException("Condition must be a number (treated as boolean)");
+    }
 
-		double cond = ((NumVal) condVal).v();
-			if (cond != 0) {
-				return e.thenBranch().accept(this, env);
-			} else {
-				return new UnitVal(); // or null
-		}
-	}
+    double cond = ((NumVal) condVal).v();
 
+    // Log whether the condition is true or false
+    System.out.println("Condition evaluated to: " + cond);
+
+    // If condition is true (non-zero), execute the 'thenBranch' block
+    if (cond != 0) {
+        System.out.println("Executing thenBranch...");
+        e.thenBranch().accept(this, env);
+    } else {
+        System.out.println("Condition is false, skipping thenBranch.");
+    }
+
+    // Ensure program flow continues after the `if` block
+    System.out.println("Flow continues after if statement.");
+    
+    return new UnitVal();  // Ensures program flow continues normally
+}
+	@Override
+public Value visit(WhileExp e, Env env) {
+    while (true) {
+        // Evaluate the condition
+        Value condVal = e.condition().accept(this, env);
+
+        if (!(condVal instanceof NumVal)) {
+            throw new RuntimeException("Condition must be a number (treated as boolean)");
+        }
+
+        // Get the condition value
+        double cond = ((NumVal) condVal).v();
+        
+        // If condition is 0 (false), break the loop
+        if (cond == 0) {
+            break;
+        }
+
+        // Evaluate the body of the loop
+        // This will loop through multiple expressions if grouped with brackets
+        e.body().accept(this, env);  // Here, the body can now be a block with multiple statements
+    }
+
+    return null; // Return Unit value to signify no meaningful return
+}
 	@Override
 	public Value visit(CompareExp e, Env env) {
 	double l = ((NumVal) e.left().accept(this, env)).v();
@@ -198,7 +246,15 @@ public class Evaluator implements Visitor<Value> {
 		return new Value.NumVal(result ? 1 : 0); // return 1 for true, 0 for false
 	}
 
-
+	@Override
+	public Value visit(BlockExp e, Env env) {
+		Value result = new UnitVal();
+		for (Exp exp : e.getExpressions()) {
+			System.out.println("Evaluating block expression: " + exp.getClass().getSimpleName());
+			result = exp.accept(this, env);
+		}
+		return result;
+	}
 
 
 	@Override

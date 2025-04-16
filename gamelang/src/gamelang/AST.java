@@ -7,6 +7,7 @@ import gamelang.AST.ASTNode;
 import gamelang.AST.CompoundArithExp;
 import gamelang.AST.DefineDecl;
 import gamelang.AST.Exp;
+import gamelang.Value.UnitVal;
 
 /**
  * This class hierarchy represents expressions in the abstract syntax tree
@@ -387,6 +388,51 @@ public interface AST {
 		}
 	}
 
+	public static class WhileExp extends Exp {
+		private final Exp condition;
+		private final Exp body;
+	
+		public WhileExp(Exp condition, Exp body) {
+			this.condition = condition;
+			this.body = body;
+		}
+	
+		public Exp condition() {
+			return condition;
+		}
+	
+		public Exp body() {
+			return body;
+		}
+	
+		@Override
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
+
+	public static class BlockExp extends Exp {
+		private final List<Exp> expressions;
+	
+		public BlockExp(List<Exp> expressions) {
+			this.expressions = expressions;
+		}
+	
+		public List<Exp> getExpressions() {
+			return expressions;
+		}
+	
+		@Override
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			Value result = new UnitVal();  // Initialize result to an empty value
+	
+			for (Exp exp : expressions) {
+				result = (Value) exp.accept(visitor, env);  // Cast result to Value explicitly
+			}
+	
+			return (T) result;  // Return result as a Value (or UnitVal)
+		}
+	}
 	public interface Visitor <T> {
 		// This interface should contain a signature for each concrete AST node.
 		public T visit(AST.AddExp e, Env env);
@@ -407,6 +453,8 @@ public interface AST {
 		public T visit(AST.Order e, Env env);
 		public T visit(AST.IfExp e, Env env);
 		public T visit(AST.CompareExp e, Env env);
+		public T visit(AST.WhileExp e, Env env);
+		public T visit(AST.BlockExp e, Env env);
 	}	
 }
 
