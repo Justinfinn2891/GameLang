@@ -26,6 +26,7 @@ definedecl returns [DefineDecl ast] :
         | r=rollexp { $ast = $r.ast; }
         | x=exitexp { $ast = $x.ast; }
         | o=orderexp { $ast = $o.ast; }
+        | i=ifexp { $ast = $i.ast; }
         ;
 
 
@@ -126,6 +127,18 @@ printexp returns [Exp ast]
     : 'ORDER66' { $ast = new Order(); }
     ;
 
+     boolexp returns [Exp ast]
+    : l=exp op=('>' | '<' | '>=' | '<=' | '==' | '!=') r=exp {
+        $ast = new CompareExp($l.ast, $r.ast, $op.text);
+    }
+    ;
+
+    ifexp returns [Exp ast]
+    : 'IF' '(' cond=boolexp ')' stmt=exp {
+        $ast = new IfExp($cond.ast, $stmt.ast);
+    }
+    ;
+
  // Lexical Specification of this Programming Language
  //  - lexical specification rules start with uppercase
  
@@ -136,6 +149,7 @@ printexp returns [Exp ast]
  EXIT_GAME : 'EXIT_GAME';
  Let : 'let' ;
  Dot : '.' ;
+
 
 
  Number : DIGIT+ ;

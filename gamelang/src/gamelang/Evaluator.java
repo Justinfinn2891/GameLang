@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.ArrayList;
 
 import gamelang.AST.AddExp;
+import gamelang.AST.CompareExp;
 import gamelang.AST.DefineDecl;
 import gamelang.AST.DivExp;
 import gamelang.AST.ExitGameExp;
 import gamelang.AST.Exp;
+import gamelang.AST.IfExp;
 import gamelang.AST.MultExp;
 import gamelang.AST.NegExp;
 import gamelang.AST.NumExp;
@@ -160,6 +162,44 @@ public class Evaluator implements Visitor<Value> {
 	System.exit(0);
 	return null; // this line is never reached, but needed for return type
 	}
+
+	@Override
+	public Value visit(IfExp e, Env env) {
+		Value condVal = e.condition().accept(this, env);
+
+		if (!(condVal instanceof NumVal)) {
+			throw new RuntimeException("Condition must be a number (treated as boolean)");
+		}
+
+		double cond = ((NumVal) condVal).v();
+			if (cond != 0) {
+				return e.thenBranch().accept(this, env);
+			} else {
+				return new UnitVal(); // or null
+		}
+	}
+
+	@Override
+	public Value visit(CompareExp e, Env env) {
+	double l = ((NumVal) e.left().accept(this, env)).v();
+	double r = ((NumVal) e.right().accept(this, env)).v();
+	boolean result;
+
+	switch (e.op()) {
+		case ">": result = l > r; break;
+		case "<": result = l < r; break;
+		case ">=": result = l >= r; break;
+		case "<=": result = l <= r; break;
+		case "==": result = l == r; break;
+		case "!=": result = l != r; break;
+		default: throw new RuntimeException("Unknown operator: " + e.op());
+	}
+
+		return new Value.NumVal(result ? 1 : 0); // return 1 for true, 0 for false
+	}
+
+
+
 
 	@Override
 	public Value visit(Order e, Env env) {	

@@ -346,6 +346,47 @@ public interface AST {
         }
     }
 
+	public static class IfExp extends Exp {
+		private final Exp condition;
+		private final Exp thenBranch;
+	
+		public IfExp(Exp condition, Exp thenBranch) {
+			this.condition = condition;
+			this.thenBranch = thenBranch;
+		}
+	
+		public Exp condition() {
+			return condition;
+		}
+	
+		public Exp thenBranch() {
+			return thenBranch;
+		}
+	
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
+
+	public static class CompareExp extends Exp {
+		private final Exp left, right;
+		private final String op;
+	
+		public CompareExp(Exp left, Exp right, String op) {
+			this.left = left;
+			this.right = right;
+			this.op = op;
+		}
+	
+		public Exp left() { return left; }
+		public Exp right() { return right; }
+		public String op() { return op; }
+	
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
+
 	public interface Visitor <T> {
 		// This interface should contain a signature for each concrete AST node.
 		public T visit(AST.AddExp e, Env env);
@@ -364,6 +405,8 @@ public interface AST {
 		public T visit(AST.RollExp e, Env env);
 		public T visit(AST.ExitGameExp e, Env env);
 		public T visit(AST.Order e, Env env);
+		public T visit(AST.IfExp e, Env env);
+		public T visit(AST.CompareExp e, Env env);
 	}	
 }
 
