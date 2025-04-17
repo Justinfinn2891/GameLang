@@ -359,9 +359,26 @@ public interface AST {
 		public Exp condition() {
 			return condition;
 		}
-	
+		
 		public Exp thenBranch() {
 			return thenBranch;
+		}
+
+		
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
+
+	public static class EnterQuestExp extends Exp {
+		private final String name;
+	
+		public EnterQuestExp(String name) {
+			this.name = name;
+		}
+	
+		public String name() {
+			return name;
 		}
 	
 		public <T> T accept(Visitor<T> visitor, Env env) {
@@ -455,6 +472,7 @@ public interface AST {
 		public T visit(AST.CompareExp e, Env env);
 		public T visit(AST.WhileExp e, Env env);
 		public T visit(AST.BlockExp e, Env env);
+		public T visit(AST.EnterQuestExp e, Env env);
 	}	
 }
 

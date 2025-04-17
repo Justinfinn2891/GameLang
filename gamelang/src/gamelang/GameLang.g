@@ -36,6 +36,8 @@ definedecl returns [DefineDecl ast] :
         | i=ifexp { $ast = $i.ast; }
         | wh=whileexp { $ast = $wh.ast; }
         | b=block { $ast = $b.ast; }
+        | eq=enterexp { $ast = $eq.ast; }
+
         ;
 
 
@@ -110,7 +112,7 @@ printexp returns [Exp ast]
 @init {
     List<Exp> parts = new ArrayList<Exp>();
 }
-    : 'PRINT'
+    : 'PRINT' '|'
       (
           (s=STRING {
               String raw = $s.text;
@@ -118,10 +120,11 @@ printexp returns [Exp ast]
           }
           | e=exp { parts.add($e.ast); }
           )
-      )+
+      )+ 
       {
           $ast = new PrintExp(parts);
       }
+      '|'
     ;
 
     rollexp returns [Exp ast]
@@ -142,13 +145,21 @@ printexp returns [Exp ast]
     }
     ;
 
-    ifexp returns [Exp ast]
-    : 'SHOOT-IF' '(' cond=boolexp ')' stmt=exp {
-        $ast = new IfExp($cond.ast, $stmt.ast);
+enterexp returns [Exp ast]
+    : 'ENTER-QUEST' id=Identifier { $ast = new EnterQuestExp($id.text); }
+    ;
+
+ifexp returns [Exp ast]
+    : 'SHOOT-IF' '(' cond=boolexp ')' '{' stmts+=exp+ '}' {
+        List<Exp> expressions = new ArrayList<>();
+        for (ExpContext expCtx : $stmts) {
+            expressions.add(expCtx.ast);  // Add each inner expression
+        }
+        $ast = new IfExp($cond.ast, new BlockExp(expressions));
     }
     ;
 whileexp returns [Exp ast]
-    : 'LOOP-WHILE' '(' cond=boolexp ')' '{' stmts+=exp+ '}' {
+    : 'RESPAWN-UNTIL' '(' cond=boolexp ')' '{' stmts+=exp+ '}' {
         List<Exp> expressions = new ArrayList<>();
         for (ExpContext expCtx : $stmts) {
             expressions.add(expCtx.ast);  // Add the AST of each statement
@@ -175,7 +186,7 @@ block returns [Exp ast]
  EXIT_GAME : 'EXIT_GAME';
  Let : 'let' ;
  Dot : '.' ;
-
+ENTER_QUEST : 'ENTER-QUEST';
 
 
  Number : DIGIT+ ;

@@ -4,6 +4,7 @@ import gamelang.AST.BlockExp;
 import gamelang.AST.CompareExp;
 import gamelang.AST.DefineDecl;
 import gamelang.AST.DivExp;
+import gamelang.AST.EnterQuestExp;
 import gamelang.AST.ExitGameExp;
 import gamelang.AST.Exp;
 import gamelang.AST.IfExp;
@@ -26,6 +27,7 @@ import gamelang.Value.NumVal;
 import gamelang.Value.StrVal;
 import gamelang.Value.UnitVal;
 import java.util.List;
+import java.util.Scanner;
 
 public class Evaluator implements Visitor<Value> {
 	
@@ -117,11 +119,11 @@ public class Evaluator implements Visitor<Value> {
 
 	@Override
 	public Value visit(VarExp e, Env env) {
-		Value value = env.get(e.name());
-		if (value == null) {
-			throw new RuntimeException("Variable " + e.name() + " is not initialized.");
+		Value val = env.get(e.name());
+		if (val == null) {
+			throw new RuntimeException("Undefined variable: " + e.name());
 		}
-		return value;
+		return val;
 	}
 	
 	
@@ -139,19 +141,38 @@ public class Evaluator implements Visitor<Value> {
 		for (Exp part : e.getParts()) {
 			Value val = part.accept(this, env);
 			// If value is null, print "null", else print the value
+			String out = val.toString();
 			if (val == null) {
 				sb.append("null");
 			} else {
 				sb.append(val.toString());
 			}
+			if (out.equals("->")) {
+				System.out.println(); // ← custom newline
+			}
+			else if (!(val instanceof Value.UnitVal)) {
+				System.out.print(out);
+			}
 		}
-	
-		// Log the value we are printing (optional)
-		System.out.println("PRINT: " + sb.toString());
 	
 		return new UnitVal();  // Do not print "unit" or any value.
 	}
 	
+	@Override
+public Value visit(EnterQuestExp e, Env env) {
+    System.out.print("> "); // input prompt
+    Scanner scanner = new Scanner(System.in);
+    if (scanner.hasNextLine()) {
+        String input = scanner.nextLine().trim();
+        try {
+            double val = Double.parseDouble(input);
+            env.set(e.name(), new NumVal(val)); // set variable in environment
+        } catch (NumberFormatException ex) {
+            env.set(e.name(), new Value.StrVal(input)); // fallback: treat as string
+        }
+    }
+    return new UnitVal();
+}
 	@Override
 	public Value visit(StrLitExp e, Env env) {
 	return new StrVal(e.value());
@@ -170,38 +191,34 @@ public class Evaluator implements Visitor<Value> {
 	return null; // this line is never reached, but needed for return type
 	}
 
+	private Value checkType(Value value, Class... types) {
+        for (Class type : types) {
+            if (type.isInstance(value)) {
+                return value;
+            }
+        }
+       return null;
+    }
 	
 	@Override
-public Value visit(IfExp e, Env env) {
-    // Evaluate the condition
-    Value condVal = e.condition().accept(this, env);
-    
-    // Log the value of the condition
-    System.out.println("Condition value: " + condVal);
-
-    // Ensure condition is a numeric value
-    if (!(condVal instanceof NumVal)) {
-        throw new RuntimeException("Condition must be a number (treated as boolean)");
-    }
-
-    double cond = ((NumVal) condVal).v();
-
-    // Log whether the condition is true or false
-    System.out.println("Condition evaluated to: " + cond);
-
-    // If condition is true (non-zero), execute the 'thenBranch' block
-    if (cond != 0) {
-        System.out.println("Executing thenBranch...");
-        e.thenBranch().accept(this, env);
-    } else {
-        System.out.println("Condition is false, skipping thenBranch.");
-    }
-
-    // Ensure program flow continues after the `if` block
-    System.out.println("Flow continues after if statement.");
-    
-    return new UnitVal();  // Ensures program flow continues normally
-}
+	public Value visit(IfExp e, Env env) {
+		// Evaluate the condition expression
+		Value condVal = e.condition().accept(this, env);
+	
+		// Ensure it's a numeric value (used like a boolean)
+		if (!(condVal instanceof NumVal)) {
+			throw new RuntimeException("Condition must evaluate to a numeric value.");
+		}
+		condVal = checkType(condVal, NumVal.class);
+		// Interpret non-zero as true
+		double cond = ((NumVal) condVal).v();
+		// Choose and evaluate the correct branch
+		if (cond != 0) {
+			return e.thenBranch().accept(this, env);
+		} else {
+			return null;
+		}
+	}
 	@Override
 public Value visit(WhileExp e, Env env) {
     while (true) {

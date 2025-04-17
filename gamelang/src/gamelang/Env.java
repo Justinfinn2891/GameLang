@@ -8,7 +8,7 @@ package gamelang;
  */
 public interface Env {
 	Value get (String search_var);
-
+	void set(String var, Value val);
 	@SuppressWarnings("serial")
 	static public class LookupException extends RuntimeException {
 		LookupException(String message){
@@ -20,12 +20,21 @@ public interface Env {
 		public Value get (String search_var) {
 			throw new LookupException("No binding found for name: " + search_var);
 		}
+
+		public void set(String var, Value val) {
+			throw new UnsupportedOperationException("set not supported in this Env type.");
+		}
 	}
 	
 	static public class ExtendEnv implements Env {
 		private Env _saved_env; 
 		private String _var; 
-		private Value _val; 
+		private Value _val;
+		
+		public void set(String var, Value val) {
+			throw new UnsupportedOperationException("set not supported in this Env type.");
+		}
+		
 		public ExtendEnv(Env saved_env, String var, Value val){
 			_saved_env = saved_env;
 			_var = var;
@@ -40,6 +49,12 @@ public interface Env {
 	
 	static public class GlobalEnv implements Env {
 		private java.util.Hashtable<String, Value> map;
+
+		@Override
+public synchronized void set (String var, Value val) {
+    map.put(var, val);
+}
+
 		public GlobalEnv(){
 			map = new java.util.Hashtable<String, Value>();
 		}

@@ -1,4 +1,3 @@
-(/ 
-	(* (- 6 1) 2) 
-	(+ 1 1)
-)
+STAT X = 5 
+PRINT |"CRAPS GAME" "->" "--------------" "->" "1. PASS" "->" "2. DONT PASS" "->" "3. ROLL" "->"|
+PRINT |"BALANCE: " X |
