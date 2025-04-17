@@ -1,9 +1,7 @@
 package gamelang;
-import java.io.IOException;
-
 import gamelang.AST.*;
-import gamelang.Env;
-import gamelang.Value;
+import gamelang.AST.Program;
+import java.io.IOException;
 
 /**
  * This main class implements the Read-Eval-Print-Loop of the interpreter with
@@ -33,7 +31,7 @@ public class Interpreter {
 			} catch (IOException e) {
 				System.out.println("Error reading input:" + e.getMessage());
 			} catch (NullPointerException e) {
-				System.out.println("Error:" + e.getMessage());
+			
 			}
 		}
 	}

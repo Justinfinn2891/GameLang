@@ -1,15 +1,79 @@
-(let 
-	((a 3))
-	(let ((b 100)) 
-		(let ((c 84)) 
-			(let ((d 279)) 
-				(let ((e 277)) 
-					(+
-						(* a b) 
-						(/ c (- d e))
-					)
-				)
-			)
-		)
-	)
-)
+STAT BALANCE = 500
+STAT PASSMONEY = 0
+STAT DONTPASSMONEY = 0  
+RESPAWN-UNTIL(BALANCE != 0){
+	PRINT |"CRAPS GAME" "->" "--------------" "->" "1. PASS" "->" "2. DONT PASS" "->" "3. ROLL" "->"|
+	PRINT |"BALANCE: " BALANCE "->" |
+	ENTER-QUEST pChoice
+	SHOOT-IF(pChoice == 1){
+		PRINT |"BET MENU: " "->"|
+		PRINT |"1. 100 " "->"|
+		PRINT |"2. 200 " "->"|
+		ENTER-QUEST pChoice
+		SHOOT-IF(pChoice == 1){
+			STAT BALANCE = BALANCE # 100
+			STAT PASSMONEY = PASSMONEY + 100 
+		}
+		SHOOT-IF(pChoice == 2){
+			STAT BALANCE = BALANCE - 200
+			STAT PASSMONEY = PASSMONEY + 100
+		} 
+		STAT pChoice = 0
+	}
+	SHOOT-IF(pChoice == 2){
+		PRINT |"BET MENU: " "->"|
+		PRINT |"1. 100 " "->"|
+		PRINT |"2. 200 " "->"|
+		ENTER-QUEST pChoice
+		SHOOT-IF(pChoice == 1){
+			STAT BALANCE = BALANCE - 100
+			STAT DONTPASSMONEY = DONTPASSMONEY + 100 
+		}
+		SHOOT-IF(pChoice == 2){
+			STAT BALANCE = BALANCE - 200
+			STAT DONTPASSMONEY = DONTPASSMONEY + 100
+		} 
+			STAT pChoice = 0
+	}
+	SHOOT-IF(pChoice == 3){
+		STAT DIE1 = ROLL
+		STAT DIE2 = ROLL
+		STAT DICE = DIE1 + DIE2
+		PRINT |"DICE: " DICE "->"|
+		SHOOT-IF(DICE == 2){
+			PRINT |"DONTPASS WINS" "->"|
+			STAT BALANCE = BALANCE + DONTPASSMONEY * 2 
+			STAT PASSMONEY = 0
+			STAT DONTPASSMONEY = 0
+			STAT pChoice = 0
+		}
+		SHOOT-IF(DICE == 3){
+			PRINT |"DONTPASS WINS" "->"|
+			STAT BALANCE = BALANCE + DONTPASSMONEY * 2
+			STAT PASSMONEY = 0
+			STAT DONTPASSMONEY = 0
+			STAT pChoice = 0
+		}
+		SHOOT-IF(DICE == 7){
+			PRINT |"PASS WINS" "->"|
+			STAT BALANCE = BALANCE + PASSMONEY * 2
+			STAT PASSMONEY = 0
+			STAT DONTPASSMONEY = 0
+			STAT pChoice = 0
+		}
+		SHOOT-IF(DICE == 11){
+			PRINT |"PASS WINS" "->"|
+			STAT BALANCE = BALANCE + PASSMONEY * 2
+			STAT PASSMONEY = 0
+			STAT DONTPASSMONEY = 0
+			STAT pChoice = 0
+		}
+		SHOOT-IF(DICE == 12){
+			PRINT |"DONTPASS WINS" "->"|
+			STAT BALANCE = BALANCE + DONTPASSMONEY * 2
+			STAT PASSMONEY = 0
+			STAT DONTPASSMONEY = 0
+			STAT pChoice = 0
+		}
+	}
+}

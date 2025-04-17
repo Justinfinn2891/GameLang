@@ -59,7 +59,7 @@ infixaddsubt returns [Exp ast]
                           list.add($r.ast);
                           $ast = new AddExp(list);
                         })
-    | ('-' r=infixmuldiv { 
+    | ('#' r=infixmuldiv { 
                           list = new ArrayList<Exp>();
                           list.add($ast);
                           list.add($r.ast);
