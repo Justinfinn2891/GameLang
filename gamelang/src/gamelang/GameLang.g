@@ -37,6 +37,10 @@ definedecl returns [DefineDecl ast] :
         | wh=whileexp { $ast = $wh.ast; }
         | b=block { $ast = $b.ast; }
         | eq=enterexp { $ast = $eq.ast; }
+        | tr=travelerexp { $ast = $tr.ast; }
+        | ar=arthurexp { $ast = $ar.ast; }
+        | po=portalexp { $ast = $po.ast; }
+        | sad=joelexp { $ast = $sad.ast; }
 
         ;
 
@@ -112,7 +116,7 @@ printexp returns [Exp ast]
 @init {
     List<Exp> parts = new ArrayList<Exp>();
 }
-    : 'PRINT' '|'
+    : 'DETECTION-METER' '|'
       (
           (s=STRING {
               String raw = $s.text;
@@ -132,11 +136,27 @@ printexp returns [Exp ast]
     ;
 
     exitexp returns [Exp ast]
-    : 'CALL' 'EXIT_GAME' { $ast = new ExitGameExp(); }
+    : 'DESPAWN' 'GAME' { $ast = new ExitGameExp(); }
     ;
 
     orderexp returns [Exp ast]
     : 'ORDER66' { $ast = new Order(); }
+    ;
+
+    travelerexp returns [Exp ast]
+    : 'TRAVELER' { $ast = new Traveler(); }
+    ;
+
+    arthurexp returns [Exp ast]
+    : 'ARTHUR' { $ast = new Arthur(); }
+    ;
+
+    portalexp returns [Exp ast]
+    : 'PORTAL' { $ast = new Portal(); }
+    ;
+
+    joelexp returns [Exp ast]
+    : 'JOEL' { $ast = new Joel(); }
     ;
 
      boolexp returns [Exp ast]
@@ -159,7 +179,7 @@ ifexp returns [Exp ast]
     }
     ;
 whileexp returns [Exp ast]
-    : 'RESPAWN-UNTIL' '(' cond=boolexp ')' '{' stmts+=exp+ '}' {
+    : 'RESPAWN-WHILE' '(' cond=boolexp ')' '{' stmts+=exp+ '}' {
         List<Exp> expressions = new ArrayList<>();
         for (ExpContext expCtx : $stmts) {
             expressions.add(expCtx.ast);  // Add the AST of each statement

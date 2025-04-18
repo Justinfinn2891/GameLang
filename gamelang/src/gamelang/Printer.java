@@ -118,6 +118,9 @@ public String visit(AST.PrintExp e, Env env) {
         public String visit(AST.RollExp e, Env env) {
             return "Roll"; // Or something like: String.valueOf((int)(Math.random() * 6 + 1));
         }
+		public String visit(AST.EnterQuestExp e, Env env) {
+            return "Roll"; // Or something like: String.valueOf((int)(Math.random() * 6 + 1));
+        }
 
 		public String visit(AST.Order e, Env env) {
             return "Roll"; // Or something like: String.valueOf((int)(Math.random() * 6 + 1));
@@ -128,6 +131,23 @@ public String visit(AST.PrintExp e, Env env) {
         }
 
 		public String visit(AST.BlockExp e, Env env) {
+            return "ExitGame"; // Or handle game exit behavior however you want
+        }
+
+
+        public String visit(AST.Traveler e, Env env) {
+            return "Roll"; // Or something like: String.valueOf((int)(Math.random() * 6 + 1));
+        }
+
+		public String visit(AST.Portal e, Env env) {
+            return "Roll"; // Or something like: String.valueOf((int)(Math.random() * 6 + 1));
+        }
+
+        public String visit(AST.Arthur e, Env env) {
+            return "ExitGame"; // Or handle game exit behavior however you want
+        }
+
+		public String visit(AST.Joel e, Env env) {
             return "ExitGame"; // Or handle game exit behavior however you want
         }
 		

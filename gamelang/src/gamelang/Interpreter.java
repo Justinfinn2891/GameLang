@@ -1,5 +1,4 @@
 package gamelang;
-import gamelang.AST.*;
 import gamelang.AST.Program;
 import java.io.IOException;
 
@@ -12,10 +11,7 @@ import java.io.IOException;
  */
 public class Interpreter {
 	public static void main(String[] args) {
-		System.out.println("Type a program to evaluate and press the enter key," + 
-							" e.g. (define result (let ((a 3) (b 100) (c 84) (d 279) (e 277)) (+ (* a b) (/ c (- d e))))) result \n" + 
-							" or (define a 3) (define b 100) (define c 84) (define d 279) (define e 277) (+ (* a b) (/ c (- d e))) \n" +
-							"Press Ctrl + C to exit.");
+		System.out.println("Welcome and thank you for using GameLang! You can refer to the super-amazing handbook guide for our language here: https://docs.google.com/document/d/1s8d7fqp6QnAy_vDaZrc39SZdUS8IP_KKnbYzo1lXtZ4/edit?usp=sharing");
 		Reader reader = new Reader();
 		Evaluator eval = new Evaluator();
 		Printer printer = new Printer();

@@ -347,6 +347,38 @@ public interface AST {
         }
     }
 
+	public static class Traveler extends Exp {
+        public Traveler() {}
+    
+        public <T> T accept(Visitor<T> visitor, Env env) {
+            return visitor.visit(this, env);
+        }
+    }
+
+	public static class Arthur extends Exp {
+        public Arthur() {}
+    
+        public <T> T accept(Visitor<T> visitor, Env env) {
+            return visitor.visit(this, env);
+        }
+    }
+
+	public static class Portal extends Exp {
+        public Portal() {}
+    
+        public <T> T accept(Visitor<T> visitor, Env env) {
+            return visitor.visit(this, env);
+        }
+    }
+
+	public static class Joel extends Exp {
+        public Joel() {}
+    
+        public <T> T accept(Visitor<T> visitor, Env env) {
+            return visitor.visit(this, env);
+        }
+    }
+
 	public static class IfExp extends Exp {
 		private final Exp condition;
 		private final Exp thenBranch;
@@ -468,11 +500,16 @@ public interface AST {
 		public T visit(AST.RollExp e, Env env);
 		public T visit(AST.ExitGameExp e, Env env);
 		public T visit(AST.Order e, Env env);
+		public T visit(AST.Traveler e, Env env);
+		public T visit(AST.Arthur e, Env env);
+		public T visit(AST.Portal e, Env env);
+		public T visit(AST.Joel e, Env env);
 		public T visit(AST.IfExp e, Env env);
 		public T visit(AST.CompareExp e, Env env);
 		public T visit(AST.WhileExp e, Env env);
 		public T visit(AST.BlockExp e, Env env);
 		public T visit(AST.EnterQuestExp e, Env env);
+
 	}	
 }
 

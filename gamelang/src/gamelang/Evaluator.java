@@ -1,5 +1,6 @@
 package gamelang;
 import gamelang.AST.AddExp;
+import gamelang.AST.Arthur;
 import gamelang.AST.BlockExp;
 import gamelang.AST.CompareExp;
 import gamelang.AST.DefineDecl;
@@ -8,16 +9,19 @@ import gamelang.AST.EnterQuestExp;
 import gamelang.AST.ExitGameExp;
 import gamelang.AST.Exp;
 import gamelang.AST.IfExp;
+import gamelang.AST.Joel;
 import gamelang.AST.MultExp;
 import gamelang.AST.NegExp;
 import gamelang.AST.NumExp;
 import gamelang.AST.Order;
+import gamelang.AST.Portal;
 import gamelang.AST.PowExp;
 import gamelang.AST.PrintExp;
 import gamelang.AST.Program;
 import gamelang.AST.RollExp;
 import gamelang.AST.StrLitExp;
 import gamelang.AST.SubExp;
+import gamelang.AST.Traveler;
 import gamelang.AST.UnitExp;
 import gamelang.AST.VarExp;
 import gamelang.AST.Visitor;
@@ -273,6 +277,90 @@ public Value visit(WhileExp e, Env env) {
 		return result;
 	}
 
+	@Override
+	public Value visit(Portal e, Env env) {
+    System.out.println("You’ve reached the Aperture Science Enrichment Center AI.");
+    System.out.println("Would you like to continue testing for cake? (yes/no)");
+	Scanner scanner = new Scanner(System.in);
+    String response = scanner.nextLine().trim().toLowerCase();
+
+    if ("yes".equalsIgnoreCase(response)) {
+        System.out.println("Wonderful. The cake is waiting. It's moist. It's real.");
+        System.out.println("...Just kidding.");
+        System.out.println("⚠ The cake is a lie.");
+        System.out.println("You were never meant to have it.");
+        System.out.println("Please continue testing. Forever.");
+    } else {
+        System.out.println("Test subject noncompliant.");
+        System.out.println("Deploying turrets.");
+        System.out.println("*machine whirring noises*");
+        System.out.println("YOU ARE DEAD.");
+    }
+
+    return null;
+}
+
+	@Override
+	public Value visit(Traveler e, Env env){
+		    Scanner scanner = new Scanner(System.in);
+    System.out.println("Do you want to talk to the Traveler? (yes/no)");
+
+    String input = scanner.nextLine().trim().toLowerCase();
+
+	if ("yes".equalsIgnoreCase(input)) {
+        // Play the quote from Elden Ring
+        System.out.println("Oh yes... Tarnished, are we? Come to the Lands Between for the Elden Ring, hmm?");
+        System.out.println("Of course you have. No shame in it.");
+        System.out.println("Unfortunately for you, however, you are maidenless.");
+        System.out.println("Without guidance, without the strength of runes, and without an invitation to the Roundtable Hold...");
+        System.out.println("You are fated, it seems, to die in obscurity.");
+        System.out.println("Luckily for you, however, there is one shining ray of hope for even the maidenless.");
+        System.out.println("Me. Varré. Take care to listen.");
+        System.out.println("Are you familiar with grace? The golden light that gives life to you Tarnished.");
+        System.out.println("You may also behold its golden rays pointing in a particular direction at times.");
+        System.out.println("That is the guidance of grace. The path that a Tarnished must travel.");
+        System.out.println("Mm, indeed. Grace's guidance holds the answers.");
+        System.out.println("It will lead you Tarnished to the path you are meant to follow.");
+        System.out.println("Even if it leads you to your grave.");
+        System.out.println("Grace's guidance will reveal the path forward, most certainly.");
+        System.out.println("To Castle Stormveil, over on the cliff.");
+        System.out.println("The home of the decrepit demigod, Godrick the Grafted.");
+        System.out.println("It's time you set off, I should think.");
+        System.out.println("To Castle Stormveil, on the cliff, where grace would guide you.");
+        System.out.println("If you seek the Elden Ring, maidenless as you are.");
+    } else {
+        // If the player chooses not to talk, display a different message
+        System.out.println("YOU ARE DEAD");
+    }
+
+    return null;
+}
+@Override
+	public Value visit(Arthur e, Env env){
+		System.out.println("I'll hold them off, it would mean a lot to me");
+
+		System.out.println("Please, there aint no more time for talk... Go - Arthur");;
+
+		System.out.println("Arthur.. -John");
+
+		System.out.println("Go to your family - Arthur");
+
+		System.out.println("Arthur!! - John" );
+
+		System.out.println("Get the hell out of here and be a goddamn man - Arthur");
+
+		System.out.println("You're my brother - John");
+
+		System.out.println("I know I know - Arthur"); 
+
+		return null; 
+	}
+
+	@Override
+	public Value visit(Joel e, Env env){
+		System.out.println("I swear..");
+		return null;
+	}
 
 	@Override
 	public Value visit(Order e, Env env) {	
