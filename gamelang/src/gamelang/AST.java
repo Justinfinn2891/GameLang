@@ -473,13 +473,13 @@ public interface AST {
 	
 		@Override
 		public <T> T accept(Visitor<T> visitor, Env env) {
-			Value result = new UnitVal();  // Initialize result to an empty value
+			Value result = new UnitVal();  
 	
 			for (Exp exp : expressions) {
-				result = (Value) exp.accept(visitor, env);  // Cast result to Value explicitly
+				result = (Value) exp.accept(visitor, env);  
 			}
 	
-			return (T) result;  // Return result as a Value (or UnitVal)
+			return (T) result;  
 		}
 	}
 
@@ -500,7 +500,6 @@ public interface AST {
 
 
 	public interface Visitor <T> {
-		// This interface should contain a signature for each concrete AST node.
 		public T visit(AST.AddExp e, Env env);
 		public T visit(AST.NumExp e, Env env);
 		public T visit(AST.UnitExp e, Env env);
@@ -511,8 +510,8 @@ public interface AST {
 		public T visit(AST.NegExp e, Env env);
 		public T visit(AST.SubExp e, Env env);
 		public T visit(AST.VarExp e, Env env);
-		public T visit(AST.DefineDecl d, Env env); // New for the gamelang
-		public T visit(AST.PrintExp e, Env env); // New for the gamelang
+		public T visit(AST.DefineDecl d, Env env); 
+		public T visit(AST.PrintExp e, Env env); 
 		public T visit(AST.StrLitExp e, Env env);
 		public T visit(AST.RollExp e, Env env);
 		public T visit(AST.ExitGameExp e, Env env);
@@ -530,5 +529,3 @@ public interface AST {
 	}	
 }
 
-// b = 5
-// x = 2+3*2

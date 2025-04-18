@@ -1,11 +1,11 @@
-PRINT |"Choose an option:" "->" "1. Start" "->" "2. Quit" "->"|
+DETECTION-METER |"Choose an option:" "->" "1. Start" "->" "2. Quit" "->"|
 ENTER-QUEST choice
 
 SHOOT-IF (choice == 1) {
-  PRINT |"Starting game..." "->"|
+  DETECTION-METER |"Starting game..." "->"|
 }
 
 SHOOT-IF (choice == 2) {
-  PRINT |"Exiting..." "->"|
-  CALL EXIT_GAME
+  DETECTION-METER |"Exiting..." "->"|
+  DESPAWN GAME
 }

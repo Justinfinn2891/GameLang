@@ -36,7 +36,7 @@ import java.util.Scanner;
 
 public class Evaluator implements Visitor<Value> {
 	
-	Env initEnv = new GlobalEnv(); //New for gamelang
+	Env initEnv = new GlobalEnv();
 	
 	Value valueOf(Program p) {
 		return (Value) p.accept(this, initEnv);
@@ -47,8 +47,8 @@ public class Evaluator implements Visitor<Value> {
 		List<Exp> operands = e.all();
 		double result = 0;
 		for(Exp exp: operands) {
-			NumVal intermediate = (NumVal) exp.accept(this, env); // Dynamic type-checking
-			result += intermediate.v(); //Semantics of AddExp in terms of the target language.
+			NumVal intermediate = (NumVal) exp.accept(this, env);
+			result += intermediate.v();
 		}
 		return new NumVal(result);
 	}
@@ -80,8 +80,8 @@ public class Evaluator implements Visitor<Value> {
 		List<Exp> operands = e.all();
 		double result = 1;
 		for(Exp exp: operands) {
-			NumVal intermediate = (NumVal) exp.accept(this, env); // Dynamic type-checking
-			result *= intermediate.v(); //Semantics of MultExp.
+			NumVal intermediate = (NumVal) exp.accept(this, env);
+			result *= intermediate.v();
 		}
 		return new NumVal(result);
 	}
@@ -133,7 +133,7 @@ public class Evaluator implements Visitor<Value> {
 	
 	
 	@Override
-	public Value visit(DefineDecl d, Env env) { // New for gamelang.
+	public Value visit(DefineDecl d, Env env) {
 		String name = d.name();
 		Exp value_exp = d.value_exp();
 		Value value = (Value) value_exp.accept(this, env);
@@ -145,7 +145,7 @@ public class Evaluator implements Visitor<Value> {
 		StringBuilder sb = new StringBuilder();
 		for (Exp part : e.getParts()) {
 			Value val = part.accept(this, env);
-			// If value is null, print "null", else print the value
+
 			String out = val.toString();
 			if (val == null) {
 				sb.append("null");
@@ -153,27 +153,27 @@ public class Evaluator implements Visitor<Value> {
 				sb.append(val.toString());
 			}
 			if (out.equals("->")) {
-				System.out.println(); // ← custom newline
+				System.out.println(); 
 			}
 			else if (!(val instanceof Value.UnitVal)) {
 				System.out.print(out);
 			}
 		}
 	
-		return new UnitVal();  // Do not print "unit" or any value.
+		return new UnitVal(); 
 	}
 	
 	@Override
 public Value visit(EnterQuestExp e, Env env) {
-    System.out.print("> "); // input prompt
+    System.out.print("> ");
     Scanner scanner = new Scanner(System.in);
     if (scanner.hasNextLine()) {
         String input = scanner.nextLine().trim();
         try {
             double val = Double.parseDouble(input);
-            env.set(e.name(), new NumVal(val)); // set variable in environment
+            env.set(e.name(), new NumVal(val));
         } catch (NumberFormatException ex) {
-            env.set(e.name(), new Value.StrVal(input)); // fallback: treat as string
+            env.set(e.name(), new Value.StrVal(input));
         }
     }
     return new UnitVal();
@@ -185,7 +185,7 @@ public Value visit(EnterQuestExp e, Env env) {
 
 	@Override
 	public Value visit(RollExp e, Env env) {
-	int result = 1 + (int)(Math.random() * 6); // Generates a value from 1 to 6
+	int result = 1 + (int)(Math.random() * 6);
 	return new Value.NumVal(result);
 	}
 
@@ -193,7 +193,7 @@ public Value visit(EnterQuestExp e, Env env) {
 	public Value visit(ExitGameExp e, Env env) {	
 	System.out.println("Exiting game. Goodbye!");
 	System.exit(0);
-	return null; // this line is never reached, but needed for return type
+	return null; 
 	}
 
 	private Value checkType(Value value, Class... types) {
@@ -207,17 +207,17 @@ public Value visit(EnterQuestExp e, Env env) {
 	
 	@Override
 	public Value visit(IfExp e, Env env) {
-		// Evaluate the condition expression
+
 		Value condVal = e.condition().accept(this, env);
 	
-		// Ensure it's a numeric value (used like a boolean)
+
 		if (!(condVal instanceof NumVal)) {
 			throw new RuntimeException("Condition must evaluate to a numeric value.");
 		}
 		condVal = checkType(condVal, NumVal.class);
-		// Interpret non-zero as true
+
 		double cond = ((NumVal) condVal).v();
-		// Choose and evaluate the correct branch
+
 		if (cond != 0) {
 			return e.thenBranch().accept(this, env);
 		} else {
@@ -227,27 +227,26 @@ public Value visit(EnterQuestExp e, Env env) {
 	@Override
 public Value visit(WhileExp e, Env env) {
     while (true) {
-        // Evaluate the condition
+
         Value condVal = e.condition().accept(this, env);
 
         if (!(condVal instanceof NumVal)) {
             throw new RuntimeException("Condition must be a number (treated as boolean)");
         }
 
-        // Get the condition value
+
         double cond = ((NumVal) condVal).v();
         
-        // If condition is 0 (false), break the loop
+
         if (cond == 0) {
             break;
         }
 
-        // Evaluate the body of the loop
-        // This will loop through multiple expressions if grouped with brackets
-        e.body().accept(this, env);  // Here, the body can now be a block with multiple statements
+
+        e.body().accept(this, env);
     }
 
-    return null; // Return Unit value to signify no meaningful return
+    return null;
 }
 	@Override
 	public Value visit(CompareExp e, Env env) {
@@ -265,7 +264,7 @@ public Value visit(WhileExp e, Env env) {
 		default: throw new RuntimeException("Unknown operator: " + e.op());
 	}
 
-		return new Value.NumVal(result ? 1 : 0); // return 1 for true, 0 for false
+		return new Value.NumVal(result ? 1 : 0);
 	}
 
 	@Override
@@ -325,7 +324,7 @@ public Value visit(WhileExp e, Env env) {
     String input = scanner.nextLine().trim().toLowerCase();
 
 	if ("yes".equalsIgnoreCase(input)) {
-        // Play the quote from Elden Ring
+
         System.out.println("Oh yes... Tarnished, are we? Come to the Lands Between for the Elden Ring, hmm?");
         System.out.println("Of course you have. No shame in it.");
         System.out.println("Unfortunately for you, however, you are maidenless.");
@@ -346,7 +345,7 @@ public Value visit(WhileExp e, Env env) {
         System.out.println("To Castle Stormveil, on the cliff, where grace would guide you.");
         System.out.println("If you seek the Elden Ring, maidenless as you are.");
     } else {
-        // If the player chooses not to talk, display a different message
+    
         System.out.println("YOU ARE DEAD");
     }
 
@@ -445,7 +444,7 @@ public Value visit(WhileExp e, Env env) {
 
 
 
-	return null; // this line is never reached, but needed for return type
+	return null; 
 	}
 
 }

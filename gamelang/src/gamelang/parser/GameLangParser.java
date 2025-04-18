@@ -795,7 +795,7 @@ public class GameLangParser extends Parser {
 					match(T__10);
 					setState(179);
 					((InfixpowerContext)_localctx).exponent = infixpower();
-					  // Right-associative exponentiation
+					  
 					                          ArrayList<Exp> list = new ArrayList<Exp>();
 					                          list.add(_localctx.ast);
 					                          list.add(((InfixpowerContext)_localctx).exponent.ast);
@@ -1330,7 +1330,7 @@ public class GameLangParser extends Parser {
 
 			        List<Exp> expressions = new ArrayList<>();
 			        for (ExpContext expCtx : ((IfexpContext)_localctx).stmts) {
-			            expressions.add(expCtx.ast);  // Add each inner expression
+			            expressions.add(expCtx.ast);  
 			        }
 			        ((IfexpContext)_localctx).ast =  new IfExp(((IfexpContext)_localctx).cond.ast, new BlockExp(expressions));
 			    
@@ -1404,7 +1404,7 @@ public class GameLangParser extends Parser {
 
 			        List<Exp> expressions = new ArrayList<>();
 			        for (ExpContext expCtx : ((WhileexpContext)_localctx).stmts) {
-			            expressions.add(expCtx.ast);  // Add the AST of each statement
+			            expressions.add(expCtx.ast);  
 			        }
 			        ((WhileexpContext)_localctx).ast =  new WhileExp(((WhileexpContext)_localctx).cond.ast, new BlockExp(expressions));
 			    
@@ -1463,7 +1463,7 @@ public class GameLangParser extends Parser {
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__2) | (1L << T__4) | (1L << T__11) | (1L << T__13) | (1L << T__15) | (1L << T__16) | (1L << T__17) | (1L << T__18) | (1L << T__19) | (1L << T__26) | (1L << T__27) | (1L << T__29) | (1L << Roll) | (1L << ENTER_QUEST) | (1L << Number) | (1L << Identifier))) != 0) );
 			setState(273);
 			match(T__28);
-			  // ← directly allow blocks inside exp
+			  
 			        List<Exp> exprs = new ArrayList<>();
 			        for (ExpContext e : ((BlockContext)_localctx).exps) {
 			            exprs.add(e.ast);

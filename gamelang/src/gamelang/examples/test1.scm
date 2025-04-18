@@ -1,3 +1,3 @@
 STAT X = 5 
-PRINT |"CRAPS GAME" "->" "--------------" "->" "1. PASS" "->" "2. DONT PASS" "->" "3. ROLL" "->"|
-PRINT |"BALANCE: " X |
+DETECTION-METER |"CRAPS GAME" "->" "--------------" "->" "1. PASS" "->" "2. DONT PASS" "->" "3. ROLL" "->"|
+DETECTION-METER |"BALANCE: " X |

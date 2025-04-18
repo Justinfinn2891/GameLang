@@ -1,6 +1,13 @@
-(define result 
-	(let ((a 3) (b 100) (c 84) (d 279) (e 277)) 
-		(+ (* a b) (/ c (- d e)))
-	)
-) 
-result
+DETECTION-METER |"Pick a number for the beginning and end" "->"|
+ENTER-QUEST START
+ENTER-QUEST END 
+	RESPAWN-WHILE (START != END){
+		SHOOT-IF (START % 2 == 0){
+			DETECTION-METER |START "EVEN" "->"|
+		}
+		SHOOT-IF (START % 2 == 1){
+			DETECTION-METER |START "ODD" "->"|
+		}
+		STAT START = START + 1
+	}
+DESPAWN GAME

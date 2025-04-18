@@ -89,7 +89,7 @@ public class Printer {
 		
 		
 		public String visit(CompareExp exp, Env env) {
-			// Your logic here
+			
 			return "some string representation of the CompareExp";
 		}
 
@@ -115,12 +115,12 @@ public String visit(AST.PrintExp e, Env env) {
 }
 
 		public String visit(IfExp exp, Env env) {
-    // Your logic here
+    
     return "IfExp";
 }
 
 		public String visit(AST.StrLitExp e, Env env) {
-            return e.value(); // Just return the string literal value
+            return e.value();
         }
 		@Override
 		public String visit(WhileExp exp, Env env) {
@@ -128,39 +128,39 @@ public String visit(AST.PrintExp e, Env env) {
 		}
 
         public String visit(AST.RollExp e, Env env) {
-            return "Roll"; // Or something like: String.valueOf((int)(Math.random() * 6 + 1));
+            return "Roll";
         }
 		public String visit(AST.EnterQuestExp e, Env env) {
-            return "Roll"; // Or something like: String.valueOf((int)(Math.random() * 6 + 1));
+            return "Roll";
         }
 
 		public String visit(AST.Order e, Env env) {
-            return "Roll"; // Or something like: String.valueOf((int)(Math.random() * 6 + 1));
+            return "Roll";
         }
 
         public String visit(AST.ExitGameExp e, Env env) {
-            return "ExitGame"; // Or handle game exit behavior however you want
+            return "ExitGame";
         }
 
 		public String visit(AST.BlockExp e, Env env) {
-            return "ExitGame"; // Or handle game exit behavior however you want
+            return "ExitGame"; 
         }
 
 
         public String visit(AST.Traveler e, Env env) {
-            return "Roll"; // Or something like: String.valueOf((int)(Math.random() * 6 + 1));
+            return "Roll"; 
         }
 
 		public String visit(AST.Portal e, Env env) {
-            return "Roll"; // Or something like: String.valueOf((int)(Math.random() * 6 + 1));
+            return "Roll"; 
         }
 
         public String visit(AST.Arthur e, Env env) {
-            return "ExitGame"; // Or handle game exit behavior however you want
+            return "ExitGame"; 
         }
 
 		public String visit(AST.Joel e, Env env) {
-            return "ExitGame"; // Or handle game exit behavior however you want
+            return "ExitGame"; 
         }
 		
 	}

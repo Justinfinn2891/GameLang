@@ -1,7 +1,6 @@
 grammar GameLang;
 
-// We are redefining programs to be zero or more define declarations 
-// followed by an optional expression.
+
 program returns [Program ast]
     locals [ArrayList<DefineDecl> defs, ArrayList<Exp> exprs]
     @init { 
@@ -9,13 +8,13 @@ program returns [Program ast]
         $exprs = new ArrayList<Exp>();
     } :
     (def=definedecl { $defs.add($def.ast); })*
-    (e=exp { $exprs.add($e.ast); })+ // ← use + to allow multiple exps
+    (e=exp { $exprs.add($e.ast); })+ 
     {
         $ast = new Program($defs, new BlockExp($exprs));
     }
 ;
 
-// New declaration for global definitions.
+
 definedecl returns [DefineDecl ast] :
     'STAT' id=Identifier '=' e=exp
     { $ast = new DefineDecl($id.text, $e.ast); }
@@ -52,7 +51,7 @@ definedecl returns [DefineDecl ast] :
   		| '-' n0=Number Dot n1=Number { $ast = new NumExp(Double.parseDouble("-" + $n0.text+"."+$n1.text)); }
   		;		
 
-// COPIED FROM INFIX
+
 infixaddsubt returns [Exp ast]
     @init { $ast = null; ArrayList<Exp> list = new ArrayList<Exp>(); }
     :
@@ -72,7 +71,7 @@ infixaddsubt returns [Exp ast]
     )*
     ;
 
-// Multiplication and Division - Higher Precedence than Addition
+
 infixmuldiv returns [Exp ast]
     @init { $ast = null; ArrayList<Exp> list = new ArrayList<Exp>(); }
     :
@@ -99,11 +98,11 @@ infixmuldiv returns [Exp ast]
     )*
     ;
 
-// Exponentiation - Highest Precedence and Right-Associative
+
 infixpower returns [Exp ast]
     :
     l=varexp { $ast = $l.ast; }
-    ('^' exponent=infixpower {  // Right-associative exponentiation
+    ('^' exponent=infixpower {  
                           ArrayList<Exp> list = new ArrayList<Exp>();
                           list.add($ast);
                           list.add($exponent.ast);
@@ -112,10 +111,10 @@ infixpower returns [Exp ast]
     )*
     ;
 
-// COPIED FROM INFIX
+
 varexp returns [Exp ast] : 
-    id=Identifier { $ast = new VarExp($id.text); }          // Variable case (like `a`, `b`)
-    | n=numexp { $ast = $n.ast; }                            // Numeric case (like `3`, `-5`)
+    id=Identifier { $ast = new VarExp($id.text); }          
+    | n=numexp { $ast = $n.ast; }                            
     ;
 
 
@@ -180,7 +179,7 @@ ifexp returns [Exp ast]
     : 'SHOOT-IF' '(' cond=boolexp ')' '{' stmts+=exp+ '}' {
         List<Exp> expressions = new ArrayList<>();
         for (ExpContext expCtx : $stmts) {
-            expressions.add(expCtx.ast);  // Add each inner expression
+            expressions.add(expCtx.ast);  
         }
         $ast = new IfExp($cond.ast, new BlockExp(expressions));
     }
@@ -189,13 +188,13 @@ whileexp returns [Exp ast]
     : 'RESPAWN-WHILE' '(' cond=boolexp ')' '{' stmts+=exp+ '}' {
         List<Exp> expressions = new ArrayList<>();
         for (ExpContext expCtx : $stmts) {
-            expressions.add(expCtx.ast);  // Add the AST of each statement
+            expressions.add(expCtx.ast);  
         }
         $ast = new WhileExp($cond.ast, new BlockExp(expressions));
     }
 ;
 block returns [Exp ast]
-    : '{' exps+=exp+ '}' {  // ← directly allow blocks inside exp
+    : '{' exps+=exp+ '}' {  
         List<Exp> exprs = new ArrayList<>();
         for (ExpContext e : $exps) {
             exprs.add(e.ast);
@@ -203,8 +202,7 @@ block returns [Exp ast]
         $ast = new BlockExp(exprs);
     }
     ;
- // Lexical Specification of this Programming Language
- //  - lexical specification rules start with uppercase
+ 
  
  Define : 'define' ;
  Print : 'PRINT';

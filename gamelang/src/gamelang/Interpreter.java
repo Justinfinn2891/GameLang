@@ -15,7 +15,7 @@ public class Interpreter {
 		Reader reader = new Reader();
 		Evaluator eval = new Evaluator();
 		Printer printer = new Printer();
-		REPL: while (true) { // Read-Eval-Print-Loop (also known as REPL)
+		REPL: while (true) { 
 			Program p = null;
 			try {
 				p = reader.read();
