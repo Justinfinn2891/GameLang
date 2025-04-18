@@ -10,6 +10,7 @@ import gamelang.AST.ExitGameExp;
 import gamelang.AST.Exp;
 import gamelang.AST.IfExp;
 import gamelang.AST.Joel;
+import gamelang.AST.ModExp;
 import gamelang.AST.MultExp;
 import gamelang.AST.NegExp;
 import gamelang.AST.NumExp;
@@ -276,6 +277,22 @@ public Value visit(WhileExp e, Env env) {
 		}
 		return result;
 	}
+
+	@Override
+	public Value visit(ModExp e, Env env) {
+		List<Exp> operands = e.all();
+		NumVal lVal = (NumVal) operands.get(0).accept(this, env);
+		double result = lVal.v();
+
+		for (int i = 1; i < operands.size(); i++) {
+			NumVal rVal = (NumVal) operands.get(i).accept(this, env);
+			result = result % rVal.v();
+		}
+
+		return new NumVal(result);
+	}
+
+
 
 	@Override
 	public Value visit(Portal e, Env env) {

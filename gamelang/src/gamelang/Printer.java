@@ -1,5 +1,7 @@
 package gamelang;
 
+import java.util.List;
+
 import gamelang.AST.CompareExp;
 import gamelang.AST.IfExp;
 import gamelang.AST.NegExp;
@@ -16,6 +18,16 @@ public class Printer {
 	}
 	
 	public static class Formatter implements AST.Visitor<String> {
+
+		@Override
+		public String visit(AST.ModExp e, Env env) {
+			List<AST.Exp> args = e.all();
+			String result = args.get(0).accept(this, env);
+			for (int i = 1; i < args.size(); i++) {
+				result += " % " + args.get(i).accept(this, env);
+			}
+			return result;
+		}
 		
 		public String visit(AST.AddExp e, Env env) {
 			String result = "(+ ";

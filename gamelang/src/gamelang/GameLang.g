@@ -77,18 +77,25 @@ infixmuldiv returns [Exp ast]
     @init { $ast = null; ArrayList<Exp> list = new ArrayList<Exp>(); }
     :
     l=infixpower { $ast = $l.ast; } 
-    (('*' r=infixpower { 
-                     list = new ArrayList<Exp>();
-                     list.add($ast);
-                     list.add($r.ast);
-                     $ast = new MultExp(list);
-                   }) 
-    | ('/' r=infixpower { 
-                     list = new ArrayList<Exp>();
-                     list.add($ast);
-                     list.add($r.ast);
-                     $ast = new DivExp(list);
-                   })
+    (
+        ('*' r=infixpower {
+            list = new ArrayList<Exp>();
+            list.add($ast);
+            list.add($r.ast);
+            $ast = new MultExp(list);
+        })
+      | ('/' r=infixpower {
+            list = new ArrayList<Exp>();
+            list.add($ast);
+            list.add($r.ast);
+            $ast = new DivExp(list);
+        })
+      | ('%' r=infixpower {
+            list = new ArrayList<Exp>();
+            list.add($ast);
+            list.add($r.ast);
+            $ast = new ModExp(list);
+        })
     )*
     ;
 

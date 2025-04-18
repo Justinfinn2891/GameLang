@@ -482,6 +482,23 @@ public interface AST {
 			return (T) result;  // Return result as a Value (or UnitVal)
 		}
 	}
+
+	public static class ModExp extends CompoundArithExp {
+		public ModExp(List<Exp> args) {
+			super(args);
+		}
+	
+		public ModExp(Exp left, Exp right) {
+			super(left, right);
+		}
+	
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
+
+
+
 	public interface Visitor <T> {
 		// This interface should contain a signature for each concrete AST node.
 		public T visit(AST.AddExp e, Env env);
@@ -509,7 +526,7 @@ public interface AST {
 		public T visit(AST.WhileExp e, Env env);
 		public T visit(AST.BlockExp e, Env env);
 		public T visit(AST.EnterQuestExp e, Env env);
-
+		public T visit(AST.ModExp e, Env env);
 	}	
 }
 
